@@ -14,7 +14,23 @@ export const ProductDetailCard = ({
 
   const isMM = locale === "mm";
   const name = isMM ? product.name_other : product.name;
-  const description = isMM ? product.description_other : product.description;
+  let description = isMM ? product.description_other : product.description;
+
+  // Fix relative URLs in Quill content (e.g., /storage/...)
+  const fixQuillUrls = (content: string) => {
+    if (!content) return "";
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "";
+    try {
+      const url = new URL(apiUrl);
+      const origin = url.origin;
+      // Replace src="/storage/..." with src="http://127.0.0.1:8000/storage/..."
+      return content.replace(/src="\/storage\//g, `src="${origin}/storage/`);
+    } catch (e) {
+      return content;
+    }
+  };
+
+  const formattedDescription = fixQuillUrls(description);
 
   return (
     <div className="bg-white dark:bg-gray-800 rounded-3xl overflow-hidden shadow-2xl border border-gray-100 dark:border-gray-700">
@@ -72,7 +88,7 @@ export const ProductDetailCard = ({
           <div className="mb-10">
             <div
               className="text-gray-600 dark:text-gray-300 text-lg leading-relaxed mb-8 prose dark:prose-invert max-w-none"
-              dangerouslySetInnerHTML={{ __html: description }}
+              dangerouslySetInnerHTML={{ __html: formattedDescription }}
             />
             <div className="flex items-baseline gap-4">
               <span className="text-5xl font-black text-indigo-600 dark:text-indigo-400">
