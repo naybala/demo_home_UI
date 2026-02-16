@@ -8,10 +8,11 @@ import RootLayoutComponent from "@/components/layout/RootLayout";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Lucky Click",
-  description: "Stay tuned for the latest updates and features of Lucky Click.",
+  title: "Tha Dar Aung",
+  description:
+    "Stay tuned for the latest updates and features of Tha Dar Aung.",
   icons: {
-    icon: "/images/lucky_click.png",
+    icon: "/images/logo.png",
   },
 };
 

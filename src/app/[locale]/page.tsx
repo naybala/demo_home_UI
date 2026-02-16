@@ -16,8 +16,6 @@ export default async function Page({
   let homeData = null;
   try {
     const response = await apiServer<HomeApiResponse>("/home");
-    console.log(response);
-
     homeData = response.data;
   } catch (error) {
     console.error("Failed to fetch home data:", error);
@@ -28,28 +26,30 @@ export default async function Page({
       {homeData ? (
         <>
           {/* Hero Section */}
-          <HeroBanner banners={homeData.bannerData} locale={locale} />
+          <HeroBanner banners={homeData.banner_data} locale={locale} />
 
-          <div className="container mx-auto max-w-[1440px]">
+          <div className="container mx-auto max-w-[1700px]">
             {/* Featured Grid Section */}
             <FeaturedGrid
-              products={homeData.miniBannerData}
+              products={homeData.mini_banner_data}
               locale={locale}
               title="Featured"
             />
 
             {/* New Arrivals Section */}
             <ProductCarousel
-              products={homeData.normalData}
+              products={homeData.normal_data}
               locale={locale}
               title="New Arrivals"
+              id="new-arrival"
             />
 
             {/* More to Explore Section */}
             <ProductCarousel
-              products={homeData.normalDataTwo}
+              products={homeData.normal_data_two}
               locale={locale}
               title="More to Explore"
+              id="more-to-explore"
             />
           </div>
         </>

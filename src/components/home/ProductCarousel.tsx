@@ -8,12 +8,14 @@ interface ProductCarouselProps {
   products: Product[];
   locale: string;
   title: string;
+  id: string;
 }
 
 export default function ProductCarousel({
   products,
   locale,
   title,
+  id,
 }: ProductCarouselProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -31,7 +33,10 @@ export default function ProductCarousel({
   };
 
   return (
-    <section className="py-12 px-6 bg-white dark:bg-gray-900 border-t border-gray-100 dark:border-gray-800">
+    <section
+      className="py-12 px-6 bg-white dark:bg-gray-900 border-t border-gray-100 dark:border-gray-800"
+      id={id}
+    >
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold dark:text-white uppercase tracking-tight italic">
           {title}

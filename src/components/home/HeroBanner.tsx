@@ -12,13 +12,17 @@ interface HeroBannerProps {
 
 export default function HeroBanner({ banners, locale }: HeroBannerProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
+  console.log(banners);
 
   if (!banners || banners.length === 0) return null;
 
   const currentBanner = banners[currentIndex];
 
   return (
-    <section className="relative h-[80vh] w-full overflow-hidden bg-black">
+    <section
+      className="relative h-[80vh] w-full overflow-hidden bg-black"
+      id="home"
+    >
       <div className="absolute inset-0 transition-opacity duration-1000 ease-in-out">
         <Image
           src={currentBanner.primary_photo}

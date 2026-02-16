@@ -1,19 +1,22 @@
 {
-  "app-name": "Lucky Click",
+  "app-name": "Tha Dar Aung",
   "language": "Language",
   "english": "English",
   "myanmar": "Myanmar",
-  "title": "Lucky Click - Channel Myanmar App",
+  "title": "Tha Dar Aung - Channel Myanmar App",
 
   
   "home": "Home",
   "home-info":"Channel Myanmar App allows you to easily watch 4K movies, football matches, boxing and other sports live with Myanmar subtitles on Android TV/Box, Android Phone, Windows PC, iOS, macOS.",
 
-  "about-us": "About Us",
-  "about-us-info":"Channel Myanmar App allows you to easily watch 4K movies, football matches, boxing and other sports live with Myanmar subtitles on Android TV/Box, Android Phone, Windows PC, iOS, macOS.",
+  "feature": "Feature",
+  "feature-info":"Channel Myanmar App allows you to easily watch 4K movies, football matches, boxing and other sports live with Myanmar subtitles on Android TV/Box, Android Phone, Windows PC, iOS, macOS.",
 
-  "our-services": "Our Services",
-  "our-services-info":"Channel Myanmar App allows you to easily watch 4K movies, football matches, boxing and other sports live with Myanmar subtitles on Android TV/Box, Android Phone, Windows PC, iOS, macOS.",
+  "new-arrival": "New Arrival",
+  "new-arrival-info":"Channel Myanmar App allows you to easily watch 4K movies, football matches, boxing and other sports live with Myanmar subtitles on Android TV/Box, Android Phone, Windows PC, iOS, macOS.",
+
+  "more-to-explore": "More to Explore",
+  "more-to-explore-info":"Channel Myanmar App allows you to easily watch 4K movies, football matches, boxing and other sports live with Myanmar subtitles on Android TV/Box, Android Phone, Windows PC, iOS, macOS.",
 
   "tutorial": "Tutorial",
   "app-tutorial": "App Tutorial",

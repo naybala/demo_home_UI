@@ -17,9 +17,9 @@ export default function FeaturedGrid({
 
   // Nike style featured grid (usually 2x2 or 2 big containers)
   return (
-    <section className="py-12 px-6 bg-white dark:bg-gray-900">
+    <section className="py-12 px-2 " id="feature">
       <h2 className="text-2xl font-bold mb-6 dark:text-white">{title}</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2">
         {products.slice(0, 4).map((product) => (
           <div
             key={product.id}

@@ -6,7 +6,7 @@ import { Image } from "primereact/image";
 export default function Footer() {
   return (
     <>
-      <div className=" bg-[#ece7e7f6] dark:bg-[#0f1114f5] shadow-lg">
+      <div className=" bg-[#fffffff6] dark:bg-[#0f1114f5] shadow-lg">
         <footer className=" text-black dark:text-white py-12 max-w-7xl mx-auto">
           <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
             {/* Column 1 */}
@@ -62,7 +62,7 @@ export default function Footer() {
           </div>
         </footer>
       </div>
-      <div className="bg-[#b9adadf6] dark:bg-[#2d323bf5] shadow-lg">
+      <div className="bg-[#fffffff6] dark:bg-[#2d323bf5] shadow-lg">
         <div className="text-center pt-5 pb-5 text-sm text-gray-600 dark:text-gray-400">
           © {new Date().getFullYear()} Lucky Click. All rights reserved.
         </div>
