@@ -1,9 +1,8 @@
 import { getDictionary } from "@/lib/get-dictionary";
 import { ProductsAPI } from "@/features/products/api/products.api";
 import Link from "next/link";
-import Image from "next/image";
 import { notFound } from "next/navigation";
-import { ProductDetailCard } from "@/components/products/productDetailCard";
+import { ProductDetailCard } from "@/features/products/components/productDetailCard";
 
 export default async function ProductDetailPage({
   params,

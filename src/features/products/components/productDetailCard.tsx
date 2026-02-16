@@ -1,7 +1,6 @@
 "use client";
 
 import { Product } from "@/features/products/types/product.types";
-import Image from "next/image";
 import { useState } from "react";
 
 export const ProductDetailCard = ({
@@ -22,13 +21,10 @@ export const ProductDetailCard = ({
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
         <div className="bg-gray-100 dark:bg-gray-700/50 p-6 md:p-12 flex flex-col gap-6">
           <div className="relative w-full aspect-square bg-white dark:bg-gray-800 rounded-2xl overflow-hidden">
-            <Image
+            <img
               src={activePhoto}
               alt={name}
-              fill
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              className="object-contain p-4 transition-all duration-300"
-              priority
+              className="absolute inset-0 w-full h-full object-contain p-4 transition-all duration-300"
             />
           </div>
 
@@ -45,11 +41,10 @@ export const ProductDetailCard = ({
                       : "border-transparent opacity-70 hover:opacity-100"
                   }`}
                 >
-                  <Image
+                  <img
                     src={photo}
                     alt={`${name} ${index + 1}`}
-                    fill
-                    className="object-cover"
+                    className="absolute inset-0 w-full h-full object-cover"
                   />
                 </button>
               ))}

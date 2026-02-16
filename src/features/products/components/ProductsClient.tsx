@@ -3,7 +3,6 @@
 import { useInfiniteProducts } from "../queries/products.queries";
 import ContentLoader from "@/components/common/ContentLoader";
 import Link from "next/link";
-import Image from "next/image";
 import { ProductListResponse } from "../types/product.types";
 import { useEffect, useRef, useState } from "react";
 
@@ -106,13 +105,10 @@ export default function ProductsClient({
                 className="group bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100 dark:border-gray-700 block"
               >
                 <div className="relative aspect-square overflow-hidden bg-gray-100 p-8">
-                  <Image
+                  <img
                     src={product.primary_photo}
                     alt={name}
-                    fill
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-                    className="object-contain transition-transform duration-500 group-hover:scale-110"
-                    priority={product.id <= 4}
+                    className="absolute inset-0 w-full h-full object-fill transition-transform duration-500 group-hover:scale-110"
                   />
                   <div className="absolute top-4 right-4 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md px-3 py-1 rounded-full text-sm font-semibold text-blue-600 dark:text-blue-400">
                     {product.category_names[0]}

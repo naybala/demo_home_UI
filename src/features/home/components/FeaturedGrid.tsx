@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import { Product } from "../types/home.types";
 
 interface FeaturedGridProps {
@@ -25,11 +24,10 @@ export default function FeaturedGrid({
             key={product.id}
             className="relative group aspect-square md:aspect-[4/5] overflow-hidden bg-gray-100 "
           >
-            <Image
+            <img
               src={product.primary_photo}
               alt={product.name}
-              fill
-              className="object-cover group-hover:scale-105 transition-transform duration-700"
+              className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
             />
             <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-colors" />
 

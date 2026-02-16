@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { Product } from "../types/home.types";
 import { useState, useEffect, useCallback } from "react";
@@ -50,13 +49,10 @@ export default function HeroBanner({ banners, locale }: HeroBannerProps) {
                 : "translate-x-full z-0"
           }`}
         >
-          <Image
+          <img
             src={banner.primary_photo}
             alt={banner.name}
-            fill
-            priority={index === 0}
-            className="object-cover object-center"
-            quality={100}
+            className="absolute inset-0 w-full h-full object-cover object-center"
           />
           <div className="absolute inset-0 bg-black/20" />
         </div>

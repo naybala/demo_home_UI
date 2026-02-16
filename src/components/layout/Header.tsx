@@ -6,7 +6,6 @@ import MobileNav from "./MobileNav";
 import ThemeToggle from "../common/ThemeToggle";
 import { LanguageSwitcher } from "../common/LanguageSwitcher";
 import { NavLinks } from "./NavLinks";
-import Image from "next/image";
 import Logo from "@/public/images/logo.png";
 
 export default function Header({ t }: { t: any }) {
@@ -44,11 +43,10 @@ export default function Header({ t }: { t: any }) {
               }}
               className="flex items-center cursor-pointer"
             >
-              <Image
-                src={Logo}
+              <img
+                src={Logo.src}
                 alt="Tha Dar Aung Logo"
                 className="h-12 w-12 mr-2 rounded-lg shadow-lg object-contain"
-                priority
               />
               {t["app-name"]}
             </span>

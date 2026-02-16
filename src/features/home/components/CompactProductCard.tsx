@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import { Product } from "../types/home.types";
 
 interface CompactProductCardProps {
@@ -14,11 +13,10 @@ export default function CompactProductCard({
   return (
     <Link href={`/${locale}/products/${product.id}`} className="group block">
       <div className="relative aspect-square overflow-hidden bg-gray-100 rounded-lg mb-4">
-        <Image
+        <img
           src={product.primary_photo}
           alt={product.name}
-          fill
-          className="object-cover group-hover:scale-105 transition-transform duration-500"
+          className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
         />
       </div>
       <div className="space-y-1">
