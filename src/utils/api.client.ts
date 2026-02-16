@@ -26,7 +26,7 @@ export async function apiClient<T>(
     ? ""
     : isFakeStore
       ? process.env.NEXT_PUBLIC_BASE_URL
-      : process.env.NEXT_PUBLIC_PROPERTIES_API_URL;
+      : process.env.NEXT_PUBLIC_API_URL;
 
   const res = await fetch(`${baseUrl}${api}`, {
     ...options,

@@ -35,7 +35,7 @@ export default function FeaturedGrid({
 
             <div className="absolute bottom-10 left-10 space-y-4">
               <h3 className="text-white text-xl font-bold tracking-tight">
-                {product.name}
+                {locale === "mm" ? product.name_other : product.name}
               </h3>
               <Link
                 href={`/${locale}/products/${product.id}`}

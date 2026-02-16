@@ -1,18 +1,5 @@
-export interface Product {
-  id: number;
-  name: string;
-  name_other: string;
-  price: string;
-  description: string;
-  description_other: string;
-  photos: string[];
-  photo_paths: string[];
-  category_ids: number[];
-  category_names: string[];
-  primary_photo: string;
-  is_banner: boolean;
-  is_mini_banner: boolean;
-}
+import { Product } from "@/features/products/types/product.types";
+export type { Product };
 
 export interface HomeData {
   banner_data: Product[];

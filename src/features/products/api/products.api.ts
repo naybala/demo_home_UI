@@ -1,18 +1,29 @@
-import { Product, ProductList } from "../types/product.types";
+import {
+  ProductDetailResponse,
+  ProductListResponse,
+} from "../types/product.types";
 import { apiServer } from "@/utils/api.server";
 
 export const ProductsAPI = {
-  getProducts: async (): Promise<ProductList> => {
-    const res = await apiServer<ProductList>(`/products`, true, {
-      next: { revalidate: 60 },
-    });
+  getProducts: async (page = 1, perPage = 8): Promise<ProductListResponse> => {
+    const res = await apiServer<ProductListResponse>(
+      `/products?page=${page}&per_page=${perPage}`,
+      false,
+      {
+        next: { revalidate: 0 },
+      },
+    );
     return res;
   },
 
-  getProduct: async (id: string | number): Promise<Product> => {
-    const res = await apiServer<Product>(`/products/${id}`, true, {
-      next: { revalidate: 60 },
-    });
+  getProduct: async (id: string | number): Promise<ProductDetailResponse> => {
+    const res = await apiServer<ProductDetailResponse>(
+      `/products/${id}`,
+      false,
+      {
+        next: { revalidate: 60 },
+      },
+    );
     return res;
   },
 };

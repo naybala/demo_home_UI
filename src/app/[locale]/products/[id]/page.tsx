@@ -13,16 +13,18 @@ export default async function ProductDetailPage({
   const { locale, id } = await params;
   const t = await getDictionary(locale as any, "product");
 
-  let product;
+  let response;
   try {
-    product = await ProductsAPI.getProduct(id);
+    response = await ProductsAPI.getProduct(id);
   } catch (error) {
     notFound();
   }
 
-  if (!product) {
+  if (!response || !response.data) {
     notFound();
   }
+
+  const product = response.data;
 
   return (
     <main className="pt-32 min-h-screen px-4 pb-20 bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
@@ -35,7 +37,7 @@ export default async function ProductDetailPage({
           Back to Products
         </Link>
 
-        <ProductDetailCard product={product} />
+        <ProductDetailCard product={product} locale={locale} />
       </div>
     </main>
   );

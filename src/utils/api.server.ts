@@ -8,7 +8,7 @@ export async function apiServer<T>(
     body = JSON.stringify(body);
   }
 
-  const fullUrl = `${isFakeStore ? process.env.NEXT_PUBLIC_BASE_URL : process.env.NEXT_PUBLIC_PROPERTIES_API_URL}${api}`;
+  const fullUrl = `${isFakeStore ? process.env.NEXT_PUBLIC_BASE_URL : process.env.NEXT_PUBLIC_API_URL}${api}`;
 
   try {
     const res = await fetch(fullUrl, {

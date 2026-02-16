@@ -23,7 +23,7 @@ export default function CompactProductCard({
       </div>
       <div className="space-y-1">
         <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100">
-          {product.name}
+          {locale === "mm" ? product.name_other : product.name}
         </h3>
         <p className="text-sm text-gray-500 dark:text-gray-400">
           {product.category_names.join(", ")}
