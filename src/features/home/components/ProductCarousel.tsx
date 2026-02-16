@@ -1,6 +1,6 @@
 "use client";
 
-import { Product } from "@/types/home";
+import { Product } from "../types/home.types";
 import CompactProductCard from "./CompactProductCard";
 import { useRef } from "react";
 

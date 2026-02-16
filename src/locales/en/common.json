@@ -3,64 +3,10 @@
   "language": "Language",
   "english": "English",
   "myanmar": "Myanmar",
-  "title": "Tha Dar Aung - Channel Myanmar App",
-
-  
+  "title": "Tha Dar Aung",
   "home": "Home",
-  "home-info":"Channel Myanmar App allows you to easily watch 4K movies, football matches, boxing and other sports live with Myanmar subtitles on Android TV/Box, Android Phone, Windows PC, iOS, macOS.",
-
   "feature": "Feature",
-  "feature-info":"Channel Myanmar App allows you to easily watch 4K movies, football matches, boxing and other sports live with Myanmar subtitles on Android TV/Box, Android Phone, Windows PC, iOS, macOS.",
-
   "new-arrival": "New Arrival",
-  "new-arrival-info":"Channel Myanmar App allows you to easily watch 4K movies, football matches, boxing and other sports live with Myanmar subtitles on Android TV/Box, Android Phone, Windows PC, iOS, macOS.",
-
   "more-to-explore": "More to Explore",
-  "more-to-explore-info":"Channel Myanmar App allows you to easily watch 4K movies, football matches, boxing and other sports live with Myanmar subtitles on Android TV/Box, Android Phone, Windows PC, iOS, macOS.",
-
-  "tutorial": "Tutorial",
-  "app-tutorial": "App Tutorial",
-
-  "properties": "Properties",
-  "products": "Products",
-  "users": "Users",
-
-  "hero-cta": "See Properties",
-
-  "about-stats": {
-    "sold": "$110M",
-    "sold-label": "Properties sold",
-    "experience": "10+",
-    "experience-label": "Years Experience",
-    "agents": "25+",
-    "agents-label": "Professional Agents",
-    "awards": "30+",
-    "awards-label": "Awards"
-  },
-
-  "features": {
-    "ownership-title": "Easy ownership",
-    "ownership-desc": "Find properties with an immersive photo experience and the most listing, including things you won't find anywhere else.",
-    "emi-title": "EMI upto 10 Years",
-    "emi-desc": "Trust Estate makes it easy to take steps to find the right loan, so that you can get the home you have dreamed about.",
-    "location-title": "Suitable Location",
-    "location-desc": "A suitable place makes a sweet home. We create a seamless experience for our customers so that they can find their peaceful place to call home."
-  },
-
-  "services": {
-    "desc": "There are many services we provide to our clients to achieve cent percent satisfaction of their properties.",
-    "residential-title": "RESIDENTIAL SALES",
-    "residential-desc": "Connect with a lender to see if a lower interest rate can save you money on your mortgage. Refinancing also gives you the opportunity to take cash out depending on how much equity you have built into your home.",
-    "rental-title": "RENTAL SERVICES",
-    "rental-desc": "The room rental agreement. This type of contract outlines the roles and responsibilities required of the tenant and landlord who will be sharing a space together.",
-    "offmarket-title": "OFF MARKET SALES",
-    "offmarket-desc": "Find out how your home measures up with homes that are for sale or recently sold. Compare market value, listing price, features and size in My Home.",
-    "commercial-title": "COMMERCIAL SALES",
-    "commercial-desc": "Determine the cost of selling your home with our Net Proceeds calculator. Looking for a local real estate agent or thinking about selling your home for cash?"
-  },
-
-
-  "our-info": "Our Information",
-
-  "app-ui": "App UI"
+  "products": "Products"
 }

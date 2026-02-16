@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Product } from "@/types/home";
+import { Product } from "../types/home.types";
 
 interface CompactProductCardProps {
   product: Product;

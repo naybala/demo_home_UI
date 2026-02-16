@@ -1,9 +1,8 @@
 import { getDictionary } from "@/lib/get-dictionary";
-import { apiServer } from "@/utils/api.server";
-import { HomeApiResponse } from "@/types/home";
-import HeroBanner from "@/components/home/HeroBanner";
-import FeaturedGrid from "@/components/home/FeaturedGrid";
-import ProductCarousel from "@/components/home/ProductCarousel";
+import { HomeAPI } from "@/features/home/api/home.api";
+import HeroBanner from "@/features/home/components/HeroBanner";
+import FeaturedGrid from "@/features/home/components/FeaturedGrid";
+import ProductCarousel from "@/features/home/components/ProductCarousel";
 
 export default async function Page({
   params,
@@ -15,7 +14,7 @@ export default async function Page({
 
   let homeData = null;
   try {
-    const response = await apiServer<HomeApiResponse>("/home");
+    const response = await HomeAPI.getHomeData();
     homeData = response.data;
   } catch (error) {
     console.error("Failed to fetch home data:", error);
@@ -43,6 +42,7 @@ export default async function Page({
               title="New Arrivals"
               id="new-arrival"
             />
+            <br />
 
             {/* More to Explore Section */}
             <ProductCarousel
@@ -51,6 +51,7 @@ export default async function Page({
               title="More to Explore"
               id="more-to-explore"
             />
+            <br />
           </div>
         </>
       ) : (

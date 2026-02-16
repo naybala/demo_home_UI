@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Product } from "@/types/home";
+import { Product } from "../types/home.types";
 
 interface FeaturedGridProps {
   products: Product[];
@@ -23,7 +23,7 @@ export default function FeaturedGrid({
         {products.slice(0, 4).map((product) => (
           <div
             key={product.id}
-            className="relative group aspect-square md:aspect-[4/5] overflow-hidden bg-gray-100"
+            className="relative group aspect-square md:aspect-[4/5] overflow-hidden bg-gray-100 "
           >
             <Image
               src={product.primary_photo}

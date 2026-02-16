@@ -15,10 +15,10 @@ export interface Product {
 }
 
 export interface HomeData {
-  bannerData: Product[];
-  miniBannerData: Product[];
-  normalData: Product[];
-  normalDataTwo: Product[];
+  banner_data: Product[];
+  mini_banner_data: Product[];
+  normal_data: Product[];
+  normal_data_two: Product[];
 }
 
 export interface HomeApiResponse {

@@ -1,56 +1,12 @@
 {
-  "app-name": "Lucky Click",
-  "language": "ဘာသာစကား",
-  "english": "အင်္ဂလိပ်",
-  "myanmar": "မြန်မာ",
-  "title": "Lucky Click - Channel Myanmar App",
-
-  "home": "အိမ်", 
-  "home-info":"Channel Myanmar App မြန်မာစာတန်းထိုး 4K ရုပ်ရှင်များ၊ ဘောလုံးပွဲများ၊ လက်ဝှေ့နှင့် အခြားအားကစား Live များကို Android TV/Box, Android Phone, Windows PC, iOS, macOS များတွင် လွယ်ကူစွာ ကြည့်ရှုနိုင်ပါပြီ",
-
-   "about-us": "About Us in mm",
-  "about-us-info":"Channel Myanmar App allows you to easily watch 4K movies, football matches, boxing and other sports live with Myanmar subtitles on Android TV/Box, Android Phone, Windows PC, iOS, macOS in mm.",
-
-  "our-services": "Our Services in mm",
-  "our-services-info":"Channel Myanmar App allows you to easily watch 4K movies, football matches, boxing and other sports live with Myanmar subtitles on Android TV/Box, Android Phone, Windows PC, iOS, macOS in mm.",
-
-  "tutorial": "ကျူတိုရီရယ်", 
-  "properties": "ဂုဏ်သတ္တိများ",
-  "products": "ထုတ်ကုန်များ",
-  "users": "အသုံးပြုသူများ",
-
-  "hero-cta": "ဂုဏ်သတ္တိများကိုကြည့်ရန်",
-
-  "about-stats": {
-    "sold": "$110M",
-    "sold-label": "ရောင်းချပြီးသော အိမ်ခြံမြေများ",
-    "experience": "10+",
-    "experience-label": "နှစ်ပေါင်းများစွာ အတွေ့အကြုံ",
-    "agents": "25+",
-    "agents-label": "ကျွမ်းကျင်သော အေးဂျင့်များ",
-    "awards": "30+",
-    "awards-label": "ရရှိထားသော ဆုတံဆိပ်များ"
-  },
-
-  "features": {
-    "ownership-title": "လွယ်ကူသော ပိုင်ဆိုင်မှု",
-    "ownership-desc": "အခြားနေရာများတွင် မတွေ့နိုင်သော အိမ်ခြံမြေများကို ကျွန်ုပ်တို့ဆီတွင် ရှာဖွေနိုင်ပါသည်။",
-    "emi-title": "၁၀ နှစ်အထိ အရစ်ကျ",
-    "emi-desc": "သင်အိပ်မက်မက်သော အိမ်ကို ပိုင်ဆိုင်နိုင်ရန် ကျွန်ုပ်တို့မှ ကူညီပေးပါမည်။",
-    "location-title": "သင့်တော်သော တည်နေရာ",
-    "location-desc": "သင့်အတွက် အေးချမ်းသာယာသော နေရာတစ်ခုကို ဖန်တီးပေးပါမည်။"
-  },
-
-  "services": {
-    "desc": "ကျွန်ုပ်တို့သည် ဝန်ဆောင်မှုပေါင်းစုံကို စိတ်ကျေနပ်မှုအပြည့်အဝရရှိအောင် ဆောင်ရွက်ပေးနေပါသည်။",
-    "residential-title": "နေထိုင်ရန် အရောင်း",
-    "residential-desc": "သင့်အိမ်အတွက် အကောင်းဆုံးသော ချေးငွေနှင့် အတိုးနှုန်းများကို ရှာဖွေပေးပါမည်။",
-    "rental-title": "အငှားဝန်ဆောင်မှု",
-    "rental-desc": "အငှားစာချုပ်များနှင့် တာဝန်ယူမှုများကို စနစ်တကျ ဆောင်ရွက်ပေးပါသည်။",
-    "offmarket-title": "Off Market အရောင်း",
-    "offmarket-desc": "စျေးကွက်ပေါက်စျေးနှင့် အိမ်တန်ဖိုးများကို တွက်ချက်ပေးပါသည်။",
-    "commercial-title": "စီးပွားရေးလုပ်ငန်းသုံး အရောင်း",
-    "commercial-desc": "စီးပွားရေးလုပ်ငန်းများအတွက် အကောင်းဆုံးသော အေးဂျင့်များနှင့် ချိတ်ဆက်ပေးပါမည်။"
-  },
-  "app-ui": "အက်ပ်အသုံးပြုသူ မျက်နှာပြင်များ"
+  "app-name": "သဒ္ဒါအောင်",
+  "language": "Language",
+  "english": "English",
+  "myanmar": "Myanmar",
+  "title": "သဒ္ဒါအောင်",
+  "home": "အိမ်",
+  "feature": "ဖီးချား",
+  "new-arrival": "နယူးအရိုက်ဘယ်",
+  "more-to-explore": "မိုးတူအိတ်ပလောရာ",
+  "products": "ထုတ်ကုန်များ"
 }
