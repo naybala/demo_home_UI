@@ -119,6 +119,10 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
                 Sign Up
               </button>
             </div>
+            <i
+              className="pi pi-google mt-10 cursor-pointer"
+              style={{ fontSize: "2rem" }}
+            ></i>
           </div>
 
           {/* Mobile Layout (Toggle Content) */}

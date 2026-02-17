@@ -35,7 +35,7 @@ export const ProductDetailCard = ({
   return (
     <div className="bg-white dark:bg-gray-800 rounded-3xl overflow-hidden shadow-2xl border border-gray-100 dark:border-gray-700">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-        <div className="bg-gray-100 dark:bg-gray-700/50 p-6 md:p-12 flex flex-col gap-6">
+        <div className="bg-gray-200 dark:bg-gray-700/50 p-6 md:p-12 flex flex-col gap-6">
           <div className="relative w-full aspect-square bg-white dark:bg-gray-800 rounded-2xl overflow-hidden">
             <img
               src={activePhoto}

@@ -27,7 +27,7 @@ export default async function ProductDetailPage({
 
   return (
     <main className="pt-32 min-h-screen px-4 pb-20 bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-[90rem] mx-auto">
         <Link
           href={`/${locale}/products`}
           className="inline-flex items-center text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 mb-8 transition-colors group"

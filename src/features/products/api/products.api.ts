@@ -16,8 +16,6 @@ export const ProductsAPI = {
     if (categoryId) url += `&category_id=${categoryId}`;
     if (search) url += `&search=${search}`;
 
-    console.log(url);
-
     const res = await apiServer<ProductListResponse>(url, false, {
       next: { revalidate: 60 },
     });
@@ -28,9 +26,9 @@ export const ProductsAPI = {
     const res = await apiServer<ProductDetailResponse>(
       `/products/${id}`,
       false,
-      {
-        next: { revalidate: 60 },
-      },
+      // {
+      //   next: { revalidate: 60 },
+      // },
     );
     return res;
   },
