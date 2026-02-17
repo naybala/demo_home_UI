@@ -10,7 +10,6 @@ import { ProductListResponse } from "../types/product.types";
 import { useEffect, useRef, useState } from "react";
 import SearchBar from "@/components/common/SearchBar";
 import SingleSelect from "@/components/common/SingleSelect";
-import { useDebounce } from "../../../hooks/use-debounce";
 
 interface ProductsClientProps {
   locale: string;
@@ -29,7 +28,10 @@ export default function ProductsClient({
   // Filter states
   const [search, setSearch] = useState("");
   const [categoryId, setCategoryId] = useState<string | number>("");
-  const debouncedSearch = useDebounce(search, 500);
+
+  // Committed states (only change on search button click)
+  const [activeSearch, setActiveSearch] = useState("");
+  const [activeCategoryId, setActiveCategoryId] = useState<string | number>("");
 
   const {
     data,
@@ -40,8 +42,8 @@ export default function ProductsClient({
     hasNextPage,
     isFetchingNextPage,
   } = useInfiniteProducts(initialData, {
-    categoryId,
-    search: debouncedSearch,
+    categoryId: activeCategoryId,
+    search: activeSearch,
   });
 
   const { data: categoriesData, isLoading: isLoadingCategories } =
@@ -79,12 +81,15 @@ export default function ProductsClient({
   const allProducts = data?.pages.flatMap((page) => page.data.data) || [];
 
   const handleSearch = () => {
-    // Search is handled by debouncedSearch, but we can trigger it manually if needed
+    setActiveSearch(search);
+    setActiveCategoryId(categoryId);
   };
 
   const handleClear = () => {
     setSearch("");
     setCategoryId("");
+    setActiveSearch("");
+    setActiveCategoryId("");
   };
 
   if (mounted && isError && allProducts.length === 0) {

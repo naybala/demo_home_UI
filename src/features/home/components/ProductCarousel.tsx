@@ -3,6 +3,7 @@
 import { Product } from "../types/home.types";
 import CompactProductCard from "./CompactProductCard";
 import { useRef } from "react";
+import Link from "next/link";
 
 interface ProductCarouselProps {
   products: Product[];
@@ -94,6 +95,16 @@ export default function ProductCarousel({
             <CompactProductCard product={product} locale={locale} />
           </div>
         ))}
+      </div>
+
+      <div className="mt-8 flex justify-center">
+        <Link
+          href={`/${locale}/products`}
+          className="text-[#2D4356] dark:text-gray-300 font-bold hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors flex items-center gap-2 group"
+        >
+          <span>See All Products</span>
+          <i className="pi pi-arrow-right text-sm transition-transform group-hover:translate-x-1"></i>
+        </Link>
       </div>
     </section>
   );

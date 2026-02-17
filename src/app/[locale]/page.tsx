@@ -42,7 +42,6 @@ export default async function Page({
               title="New Arrivals"
               id="new-arrival"
             />
-            <br />
 
             {/* More to Explore Section */}
             <ProductCarousel
@@ -51,7 +50,6 @@ export default async function Page({
               title="More to Explore"
               id="more-to-explore"
             />
-            <br />
           </div>
         </>
       ) : (
