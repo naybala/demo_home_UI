@@ -14,7 +14,13 @@ export const NavLinks = ({
   const locale = segments[1] || "en";
   const [active, setActive] = useState<string>("home");
 
-  const scrollSections = ["home", "feature", "new-arrival", "more-to-explore"];
+  const scrollSections = [
+    "home",
+    "feature",
+    "new-arrival",
+    "more-to-explore",
+    "location",
+  ];
   const pageLinks = [{ id: "products", href: "/products" }];
 
   // Sync active state with pathname

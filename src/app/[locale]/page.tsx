@@ -3,6 +3,7 @@ import { HomeAPI } from "@/features/home/api/home.api";
 import HeroBanner from "@/features/home/components/HeroBanner";
 import FeaturedGrid from "@/features/home/components/FeaturedGrid";
 import ProductCarousel from "@/features/home/components/ProductCarousel";
+import LocationSection from "@/features/home/components/LocationSection";
 
 export default async function Page({
   params,
@@ -50,6 +51,9 @@ export default async function Page({
               title="More to Explore"
               id="more-to-explore"
             />
+
+            {/* Location Section */}
+            <LocationSection title={t["location"]} id="location" />
           </div>
         </>
       ) : (
