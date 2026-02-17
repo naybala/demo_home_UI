@@ -7,11 +7,14 @@ import ThemeToggle from "../common/ThemeToggle";
 import { LanguageSwitcher } from "../common/LanguageSwitcher";
 import { NavLinks } from "./NavLinks";
 import Logo from "@/public/images/logo.png";
+import AuthModal from "@/features/auth/components/AuthModal";
 
 export default function Header({ t }: { t: any }) {
   const router = useRouter();
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
+  const [isAuthOpen, setIsAuthOpen] = useState(false);
+
   const toggleSidebar = () => setIsOpen(!isOpen);
   const closeSidebar = () => setIsOpen(false);
   const style: string = "px-3 py-1 border rounded";
@@ -55,7 +58,8 @@ export default function Header({ t }: { t: any }) {
           <div className="hidden md:flex items-center gap-4">
             <NavLinks className="px-3 py-1" t={t} />
             <i
-              className="pi pi-user cursor-pointer"
+              onClick={() => setIsAuthOpen(true)}
+              className="pi pi-user cursor-pointer hover:text-blue-500 transition-colors"
               style={{ fontSize: "1.2rem" }}
             ></i>
             <LanguageSwitcher className={style} />
@@ -71,6 +75,7 @@ export default function Header({ t }: { t: any }) {
         </div>
       </header>
       <MobileNav isOpen={isOpen} closeSidebar={closeSidebar} t={t} />
+      <AuthModal isOpen={isAuthOpen} onClose={() => setIsAuthOpen(false)} />
     </>
   );
 }

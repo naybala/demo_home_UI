@@ -64,7 +64,7 @@ export default function HeroBanner({ banners, locale }: HeroBannerProps) {
           key={currentIndex}
           className="max-w-4xl space-y-6 pointer-events-auto"
         >
-          <h1 className="text-white text-6xl md:text-8xl font-black uppercase tracking-tighter leading-none italic animate-in fade-in slide-in-from-bottom-8 duration-700">
+          <h1 className="text-white text-2xl md:text-5xl font-black tracking-tighter leading-none animate-in fade-in slide-in-from-bottom-8 duration-700">
             {locale === "mm"
               ? banners[currentIndex].name_other
               : banners[currentIndex].name}
