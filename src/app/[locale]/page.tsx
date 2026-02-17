@@ -21,7 +21,7 @@ export default async function Page({
   }
 
   return (
-    <main className="overflow-x-hidden transition-colors duration-500">
+    <main className="overflow-x-hidden pt-20 transition-colors duration-500">
       {homeData ? (
         <>
           {/* Hero Section */}

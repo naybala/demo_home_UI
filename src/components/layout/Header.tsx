@@ -34,8 +34,8 @@ export default function Header({ t }: { t: any }) {
 
   return (
     <>
-      <header className="bg-[#ece7e7f5] dark:bg-[#0f1114f5] text-black dark:text-white shadow p-4 fixed top-0 left-0 w-full z-50">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
+      <header className="bg-[#ece7e7] dark:bg-[#0f1114] text-black dark:text-white shadow p-4 fixed top-0 left-0 w-full z-50">
+        <div className="container mx-auto max-w-[1700px] flex items-center justify-between">
           <div className="text-xl font-bold">
             <span
               onClick={() => {
@@ -54,6 +54,10 @@ export default function Header({ t }: { t: any }) {
 
           <div className="hidden md:flex items-center gap-4">
             <NavLinks className="px-3 py-1" t={t} />
+            <i
+              className="pi pi-user cursor-pointer"
+              style={{ fontSize: "1.2rem" }}
+            ></i>
             <LanguageSwitcher className={style} />
             <ThemeToggle />
           </div>
