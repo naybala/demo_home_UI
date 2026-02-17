@@ -8,9 +8,11 @@ import {
 export const PRODUCT_KEYS = {
   all: ["products"] as const,
   list: () => [...PRODUCT_KEYS.all, "list"] as const,
-  infiniteList: () => [...PRODUCT_KEYS.list(), "infinite"] as const,
+  infiniteList: (filters: { categoryId?: string | number; search?: string }) =>
+    [...PRODUCT_KEYS.list(), "infinite", filters] as const,
   details: () => [...PRODUCT_KEYS.all, "detail"] as const,
   detail: (id: string | number) => [...PRODUCT_KEYS.details(), id] as const,
+  categories: () => [...PRODUCT_KEYS.all, "categories"] as const,
 };
 
 export const useProducts = (initialData?: ProductListResponse) => {
@@ -21,10 +23,14 @@ export const useProducts = (initialData?: ProductListResponse) => {
   });
 };
 
-export const useInfiniteProducts = (initialData?: ProductListResponse) => {
+export const useInfiniteProducts = (
+  initialData?: ProductListResponse,
+  filters: { categoryId?: string | number; search?: string } = {},
+) => {
   return useInfiniteQuery({
-    queryKey: PRODUCT_KEYS.infiniteList(),
-    queryFn: ({ pageParam = 1 }) => ProductsAPI.getProducts(pageParam, 8),
+    queryKey: PRODUCT_KEYS.infiniteList(filters),
+    queryFn: ({ pageParam = 1 }) =>
+      ProductsAPI.getProducts(pageParam, 8, filters.categoryId, filters.search),
     initialPageParam: 1,
     getNextPageParam: (lastPage) => {
       const meta = lastPage.data.meta;
@@ -32,12 +38,20 @@ export const useInfiniteProducts = (initialData?: ProductListResponse) => {
         ? meta.current_page + 1
         : undefined;
     },
-    initialData: initialData
-      ? {
-          pages: [initialData],
-          pageParams: [1],
-        }
-      : undefined,
+    initialData:
+      initialData && !filters.categoryId && !filters.search
+        ? {
+            pages: [initialData],
+            pageParams: [1],
+          }
+        : undefined,
+  });
+};
+
+export const useCategories = () => {
+  return useQuery({
+    queryKey: PRODUCT_KEYS.categories(),
+    queryFn: () => ProductsAPI.getCategories(),
   });
 };
 

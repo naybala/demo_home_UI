@@ -1,9 +1,6 @@
 "use client";
 
 import React from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { Country } from "@/features/properties/types/property.types";
-import SingleSelect from "./SingleSelect";
 
 interface SearchBarProps {
   searchValue: string;

@@ -1,18 +1,26 @@
 import {
+  CategoryResponse,
   ProductDetailResponse,
   ProductListResponse,
 } from "../types/product.types";
 import { apiServer } from "@/utils/api.server";
 
 export const ProductsAPI = {
-  getProducts: async (page = 1, perPage = 8): Promise<ProductListResponse> => {
-    const res = await apiServer<ProductListResponse>(
-      `/products?page=${page}&per_page=${perPage}`,
-      false,
-      {
-        next: { revalidate: 0 },
-      },
-    );
+  getProducts: async (
+    page = 1,
+    perPage = 12,
+    categoryId?: string | number,
+    search?: string,
+  ): Promise<ProductListResponse> => {
+    let url = `/products?page=${page}&per_page=${perPage}`;
+    if (categoryId) url += `&category_id=${categoryId}`;
+    if (search) url += `&search=${search}`;
+
+    console.log(url);
+
+    const res = await apiServer<ProductListResponse>(url, false, {
+      next: { revalidate: 60 },
+    });
     return res;
   },
 
@@ -22,6 +30,17 @@ export const ProductsAPI = {
       false,
       {
         next: { revalidate: 60 },
+      },
+    );
+    return res;
+  },
+
+  getCategories: async (): Promise<CategoryResponse> => {
+    const res = await apiServer<CategoryResponse>(
+      "/fetch-all-categories",
+      false,
+      {
+        next: { revalidate: 3600 },
       },
     );
     return res;

@@ -45,6 +45,19 @@ export interface ProductListResponse {
   data: PaginatedData<Product>;
 }
 
+export interface Category {
+  id: number;
+  name: string;
+  name_other: string;
+}
+
+export interface CategoryResponse {
+  code: number;
+  status: string;
+  message: string;
+  data: Category[];
+}
+
 export interface ProductDetailResponse {
   code: number;
   status: string;
