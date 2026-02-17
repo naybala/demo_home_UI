@@ -22,7 +22,7 @@ export default function FeaturedGrid({
         {products.slice(0, 4).map((product) => (
           <div
             key={product.id}
-            className="relative group aspect-square md:aspect-[4/5] overflow-hidden bg-gray-100 "
+            className="relative group aspect-[3/2] md:aspect-[6/5] overflow-hidden bg-gray-100 "
           >
             <img
               src={product.primary_photo}
