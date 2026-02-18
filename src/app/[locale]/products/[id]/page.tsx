@@ -3,6 +3,47 @@ import { ProductsAPI } from "@/features/products/api/products.api";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ProductDetailCard } from "@/features/products/components/productDetailCard";
+import { Metadata } from "next";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string; id: string }>;
+}): Promise<Metadata> {
+  const { id, locale } = await params;
+  try {
+    const response = await ProductsAPI.getProduct(id);
+    const product = response.data;
+
+    const title = locale === "mm" ? product.name_other : product.name;
+    // Description might contain HTML from a rich text editor, strip it for meta description
+    const rawDescription =
+      locale === "mm" ? product.description_other : product.description;
+    const description = rawDescription?.replace(/<[^>]*>/g, "").slice(0, 160);
+    const imageUrl = product.primary_photo;
+
+    return {
+      title: `${title} | Tha Dar Aung`,
+      description: description,
+      openGraph: {
+        title: `${title} | Tha Dar Aung`,
+        description: description,
+        images: imageUrl ? [{ url: imageUrl }] : [],
+        type: "website",
+      },
+      twitter: {
+        card: "summary_large_image",
+        title: `${title} | Tha Dar Aung`,
+        description: description,
+        images: imageUrl ? [imageUrl] : [],
+      },
+    };
+  } catch (error) {
+    return {
+      title: "Product Not Found | Tha Dar Aung",
+    };
+  }
+}
 
 export default async function ProductDetailPage({
   params,
