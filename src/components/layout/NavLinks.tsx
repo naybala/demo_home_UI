@@ -1,29 +1,29 @@
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
-import { NavLinksProps } from "../../types/MobileNavProps";
+import { useEffect, useMemo, useRef, useState, useCallback } from "react";
 import { useRouter, usePathname } from "next/navigation";
+import { NavLinksProps } from "../../types/MobileNavProps";
 
-export const NavLinks = ({
-  className = "",
-  onClick,
-  t,
-}: NavLinksProps & { t: any }) => {
+type Props = NavLinksProps & { t: Record<string, string> };
+
+export const NavLinks = ({ className = "", onClick, t }: Props) => {
   const router = useRouter();
   const pathname = usePathname();
-  const segments = pathname.split("/");
-  const locale = segments[1] || "en";
+
+  /** ---------------- Locale ---------------- */
+  const locale = useMemo(() => pathname.split("/")[1] || "en", [pathname]);
+
+  /** ---------------- Navigation config ---------------- */
+  const scrollSections = useMemo(
+    () => ["home", "feature", "new-arrival", "more-to-explore", "location"],
+    [],
+  );
+
+  const pageLinks = useMemo(() => [{ id: "products", href: "/products" }], []);
+
+  /** ---------------- Active state ---------------- */
   const [active, setActive] = useState<string>("home");
 
-  const scrollSections = [
-    "home",
-    "feature",
-    "new-arrival",
-    "more-to-explore",
-    "location",
-  ];
-  const pageLinks = [{ id: "products", href: "/products" }];
-
-  // Sync active state with pathname
+  /** ---------------- Sync active with pathname ---------------- */
   useEffect(() => {
     const currentPage = pageLinks.find(
       (page) =>
@@ -31,63 +31,81 @@ export const NavLinks = ({
         pathname.startsWith(`/${locale}${page.href}/`),
     );
 
+    // Case 1: normal page
     if (currentPage) {
       setActive(currentPage.id);
-    } else if (pathname === `/${locale}` || pathname === `/${locale}/`) {
-      const hash = window.location.hash.replace("#", "");
-      if (scrollSections.includes(hash)) {
-        setActive(hash);
-      } else if (window.scrollY < 100) {
-        setActive("home");
-      }
-    }
-  }, [pathname, locale]);
-
-  const isScrolling = useRef(false);
-  const scrollTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  const handleScrollTo = (sectionId: string, offset = -100) => {
-    if (pathname !== `/${locale}` && pathname !== `/${locale}/`) {
-      router.push(`/${locale}/#${sectionId}`);
       return;
     }
 
-    const section = document.getElementById(sectionId);
-    if (section) {
+    // Case 2: not home → stop
+    const isHome = pathname === `/${locale}` || pathname === `/${locale}/`;
+    if (!isHome) return;
+
+    // Case 3: hash section
+    const hash = window.location.hash.replace("#", "");
+    if (scrollSections.includes(hash)) {
+      setActive(hash);
+      return;
+    }
+
+    // Case 4: top of page
+    if (window.scrollY < 100) {
+      setActive("home");
+    }
+  }, [pathname, locale, pageLinks, scrollSections]);
+
+  /** ---------------- Smooth scroll handling ---------------- */
+  const isScrolling = useRef(false);
+  const scrollTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const handleScrollTo = useCallback(
+    (sectionId: string, offset = -100) => {
+      const isHome = pathname === `/${locale}` || pathname === `/${locale}/`;
+
+      // Redirect if not home
+      if (!isHome) {
+        router.push(`/${locale}/#${sectionId}`);
+        return;
+      }
+
+      const section = document.getElementById(sectionId);
+      if (!section) return;
+
       const y =
         section.getBoundingClientRect().top + window.pageYOffset + offset;
 
       isScrolling.current = true;
       setActive(sectionId);
 
-      if (scrollTimeout.current) {
-        clearTimeout(scrollTimeout.current);
-      }
+      if (scrollTimeout.current) clearTimeout(scrollTimeout.current);
 
       scrollTimeout.current = setTimeout(() => {
         isScrolling.current = false;
       }, 700);
 
       window.scrollTo({ top: y, behavior: "smooth" });
-    }
-  };
+    },
+    [pathname, locale, router],
+  );
 
+  /** ---------------- Intersection Observer ---------------- */
   useEffect(() => {
-    const observerOptions = {
-      root: null,
-      rootMargin: "-20% 0px -75% 0px",
-      threshold: 0,
-    };
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (isScrolling.current) return;
 
-    const observer = new IntersectionObserver((entries) => {
-      if (isScrolling.current) return;
-
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          setActive(entry.target.id);
-        }
-      });
-    }, observerOptions);
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActive(entry.target.id);
+          }
+        });
+      },
+      {
+        root: null,
+        rootMargin: "-20% 0px -75% 0px",
+        threshold: 0,
+      },
+    );
 
     scrollSections.forEach((id) => {
       const el = document.getElementById(id);
@@ -95,36 +113,41 @@ export const NavLinks = ({
     });
 
     return () => observer.disconnect();
-  }, [pathname]);
+  }, [scrollSections]);
 
-  const getButtonClass = (item: string) => {
-    return `${className} nav-link-item ${active === item ? "active" : ""}`;
-  };
+  /** ---------------- UI helpers ---------------- */
+  const getButtonClass = useCallback(
+    (item: string) =>
+      `${className} nav-link-item ${active === item ? "active" : ""}`,
+    [className, active],
+  );
 
+  /** ---------------- Render ---------------- */
   return (
     <>
       {scrollSections.map((section) => (
         <button
+          key={section}
           className={getButtonClass(section)}
           onClick={() => {
             handleScrollTo(section);
             onClick?.();
           }}
-          key={section}
         >
           {t[section]}
         </button>
       ))}
+
       {pageLinks.map((page) => (
         <Link
+          key={page.id}
           href={`/${locale}${page.href}`}
           className={getButtonClass(page.id)}
           onClick={() => {
             setActive(page.id);
             onClick?.();
           }}
-          key={page.id}
-          prefetch={true}
+          prefetch
         >
           {t[page.id]}
         </Link>
