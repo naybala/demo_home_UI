@@ -107,13 +107,29 @@ export const NavLinks = ({ className = "", onClick, t }: Props) => {
       },
     );
 
-    scrollSections.forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) observer.observe(el);
-    });
+    const observeElements = () => {
+      scrollSections.forEach((id) => {
+        const el = document.getElementById(id);
+        if (el) observer.observe(el);
+      });
+    };
 
-    return () => observer.disconnect();
-  }, [scrollSections]);
+    // Initial attempt
+    observeElements();
+
+    // Retry to catch elements that might mount later after language change
+    const timers = [
+      setTimeout(observeElements, 100),
+      setTimeout(observeElements, 500),
+      setTimeout(observeElements, 1000),
+      setTimeout(observeElements, 2000),
+    ];
+
+    return () => {
+      observer.disconnect();
+      timers.forEach(clearTimeout);
+    };
+  }, [scrollSections, pathname, t]);
 
   /** ---------------- UI helpers ---------------- */
   const getButtonClass = useCallback(

@@ -11,6 +11,7 @@ interface HeroBannerProps {
 
 export default function HeroBanner({ banners, locale }: HeroBannerProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
 
   const nextSlide = useCallback(() => {
     setCurrentIndex((prev) => (prev < banners.length - 1 ? prev + 1 : 0));
@@ -20,15 +21,8 @@ export default function HeroBanner({ banners, locale }: HeroBannerProps) {
     setCurrentIndex((prev) => (prev > 0 ? prev - 1 : banners.length - 1));
   };
 
-  useEffect(() => {
-    if (!banners || banners.length <= 1) return;
-
-    const timer = setInterval(() => {
-      nextSlide();
-    }, 5000);
-
-    return () => clearInterval(timer);
-  }, [nextSlide, banners.length, currentIndex]);
+  // Handle auto-slide timer via CSS animation event
+  // No manual setInterval needed as onAnimationEnd handles the trigger
 
   if (!banners || banners.length === 0) return null;
 
@@ -122,7 +116,11 @@ export default function HeroBanner({ banners, locale }: HeroBannerProps) {
             </svg>
           </button>
 
-          <div className="relative flex items-center justify-center z-20">
+          <div
+            onMouseEnter={() => setIsPaused(true)}
+            onMouseLeave={() => setIsPaused(false)}
+            className="relative flex items-center justify-center z-20 cursor-pointer"
+          >
             {/* Loading Indicator */}
             <svg className="w-20 h-20 -rotate-90 pointer-events-none overflow-visible">
               <circle
@@ -136,6 +134,7 @@ export default function HeroBanner({ banners, locale }: HeroBannerProps) {
               />
               <circle
                 key={currentIndex}
+                onAnimationEnd={nextSlide}
                 cx="40"
                 cy="40"
                 r="30"
@@ -145,7 +144,10 @@ export default function HeroBanner({ banners, locale }: HeroBannerProps) {
                 strokeDasharray="190"
                 strokeDashoffset="190"
                 className="animate-progress"
-                style={{ filter: "drop-shadow(0 0 4px rgba(255,255,255,0.6))" }}
+                style={{
+                  filter: "drop-shadow(0 0 4px rgba(255,255,255,0.6))",
+                  animationPlayState: isPaused ? "paused" : "running",
+                }}
               />
             </svg>
 
