@@ -102,7 +102,7 @@ export default function HeroBanner({ banners, locale }: HeroBannerProps) {
 
       {/* Navigation Arrows */}
       {banners.length > 1 && (
-        <div className="absolute bottom-8 right-8 hidden gap-4 md:flex">
+        <div className="absolute bottom-8 right-8 hidden items-center gap-4 md:flex">
           <button
             onClick={prevSlide}
             className="p-3 rounded-full bg-white/10 hover:bg-white/20 text-white backdrop-blur-md transition-all"
@@ -121,24 +121,53 @@ export default function HeroBanner({ banners, locale }: HeroBannerProps) {
               />
             </svg>
           </button>
-          <button
-            onClick={nextSlide}
-            className="p-3 rounded-full bg-white/10 hover:bg-white/20 text-white backdrop-blur-md transition-all"
-          >
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9 5l7 7-7 7"
+
+          <div className="relative flex items-center justify-center z-20">
+            {/* Loading Indicator */}
+            <svg className="w-20 h-20 -rotate-90 pointer-events-none overflow-visible">
+              <circle
+                cx="40"
+                cy="40"
+                r="30"
+                stroke="white"
+                strokeOpacity="0.2"
+                strokeWidth="4"
+                fill="none"
+              />
+              <circle
+                key={currentIndex}
+                cx="40"
+                cy="40"
+                r="30"
+                stroke="white"
+                strokeWidth="4"
+                fill="none"
+                strokeDasharray="190"
+                strokeDashoffset="190"
+                className="animate-progress"
+                style={{ filter: "drop-shadow(0 0 4px rgba(255,255,255,0.6))" }}
               />
             </svg>
-          </button>
+
+            <button
+              onClick={nextSlide}
+              className="absolute p-3 rounded-full bg-white/20 hover:bg-white/30 text-white backdrop-blur-lg transition-all border border-white/10"
+            >
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            </button>
+          </div>
         </div>
       )}
     </section>

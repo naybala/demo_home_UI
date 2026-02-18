@@ -55,7 +55,7 @@ export default function Header({ t }: { t: any }) {
             </span>
           </div>
 
-          <div className="hidden md:flex items-center gap-4">
+          <div className="hidden lg:flex items-center gap-4">
             <NavLinks className="px-3 py-1" t={t} />
             <i
               onClick={() => setIsAuthOpen(true)}
@@ -68,7 +68,7 @@ export default function Header({ t }: { t: any }) {
 
           <button
             onClick={toggleSidebar}
-            className="md:hidden px-2 py-1 border rounded"
+            className="lg:hidden px-2 py-1 border rounded"
           >
             ☰
           </button>

@@ -139,18 +139,19 @@ export const NavLinks = ({ className = "", onClick, t }: Props) => {
       ))}
 
       {pageLinks.map((page) => (
-        <Link
-          key={page.id}
-          href={`/${locale}${page.href}`}
-          className={getButtonClass(page.id)}
-          onClick={() => {
-            setActive(page.id);
-            onClick?.();
-          }}
-          prefetch
-        >
-          {t[page.id]}
-        </Link>
+        <button key={page.id}>
+          <Link
+            href={`/${locale}${page.href}`}
+            className={getButtonClass(page.id)}
+            onClick={() => {
+              setActive(page.id);
+              onClick?.();
+            }}
+            prefetch
+          >
+            {t[page.id]}
+          </Link>
+        </button>
       ))}
     </>
   );

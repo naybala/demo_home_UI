@@ -95,3 +95,17 @@ body::-webkit-scrollbar {
     margin-top: 1rem;
   }
 }
+
+@keyframes progress {
+  from {
+    stroke-dashoffset: 190;
+  }
+
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.animate-progress {
+  animation: progress 5s linear forwards;
+}
