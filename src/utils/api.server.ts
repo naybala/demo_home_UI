@@ -1,13 +1,18 @@
-import { cookies } from "next/headers";
-
 export async function apiServer<T>(
   api: string,
   isLocal = false,
   options: RequestInit & { body?: any; next?: NextFetchRequestConfig } = {},
 ): Promise<T> {
   let body = options.body;
-  const cookieStore = await cookies();
-  const cookieHeader = cookieStore.toString();
+  // Dynamically import cookies to avoid bundling next/headers into client components
+  let cookieHeader = "";
+  try {
+    const { cookies } = await import("next/headers");
+    const cookieStore = await cookies();
+    cookieHeader = cookieStore.toString();
+  } catch {
+    // Not in a server request context (e.g. build time)
+  }
   if (body && typeof body === "object" && !(body instanceof FormData)) {
     body = JSON.stringify(body);
   }

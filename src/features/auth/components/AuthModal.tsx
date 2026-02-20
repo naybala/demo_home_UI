@@ -5,9 +5,14 @@ import { apiClient } from "@/utils/api.client";
 interface AuthModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onSuccess?: () => void;
 }
 
-export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
+export default function AuthModal({
+  isOpen,
+  onClose,
+  onSuccess,
+}: AuthModalProps) {
   const [isSignUp, setIsSignUp] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
@@ -30,10 +35,16 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
 
       if (result.status === "success") {
         setUser(result.data.user_info);
-        onClose();
+        // Set a cookie for middleware-based route protection
+        document.cookie = "logged_in=true; path=/; SameSite=Lax";
         // Reset form
         setEmail("");
         setPassword("");
+        if (onSuccess) {
+          onSuccess();
+        } else {
+          onClose();
+        }
       } else {
         setError(result.message || "Login failed");
       }

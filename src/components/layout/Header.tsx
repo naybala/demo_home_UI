@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter, usePathname } from "next/navigation";
+import { useState, useEffect } from "react";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import MobileNav from "./MobileNav";
 import ThemeToggle from "../common/ThemeToggle";
 import { LanguageSwitcher } from "../common/LanguageSwitcher";
@@ -15,6 +15,7 @@ import { confirmDialog } from "primereact/confirmdialog";
 export default function Header({ t }: { t: any }) {
   const router = useRouter();
   const pathname = usePathname();
+  const searchParams = useSearchParams();
   const [isOpen, setIsOpen] = useState(false);
   const [isAuthOpen, setIsAuthOpen] = useState(false);
 
@@ -22,6 +23,22 @@ export default function Header({ t }: { t: any }) {
   const toggleSidebar = () => setIsOpen(!isOpen);
   const closeSidebar = () => setIsOpen(false);
   const style: string = "px-3 py-1 border rounded";
+
+  // Show toast when redirected from a protected route
+  useEffect(() => {
+    if (searchParams.get("unauthorized") === "true") {
+      (window as any).toast?.show({
+        severity: "warn",
+        summary: "Access Denied",
+        detail: "Please login to access this page.",
+        life: 4000,
+      });
+      // Clean the URL without reloading the page
+      const url = new URL(window.location.href);
+      url.searchParams.delete("unauthorized");
+      router.replace(url.pathname);
+    }
+  }, [searchParams]);
 
   const handleLogout = () => {
     confirmDialog({

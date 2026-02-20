@@ -6,7 +6,8 @@ const defaultLocale = "en";
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const refreshToken = request.cookies.get("refresh_token")?.value;
+  // Check the logged_in cookie (set by the client on login, cleared on logout)
+  const loggedIn = request.cookies.get("logged_in")?.value;
 
   const pathnameHasLocale = locales.some(
     (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`,
@@ -24,16 +25,18 @@ export function middleware(request: NextRequest) {
     pathnameWithoutLocale.startsWith(route),
   );
 
-  if (isProtectedRoute && !refreshToken) {
+  // If trying to access a protected route without a refresh_token cookie,
+  // redirect to home with an "unauthorized" query param so a toast can be shown
+  if (isProtectedRoute && !loggedIn) {
     const locale = pathnameHasLocale ? pathname.split("/")[1] : defaultLocale;
-    const url = new URL(`/${locale}/login`, request.url);
+    const url = new URL(`/${locale}`, request.url);
+    url.searchParams.set("unauthorized", "true");
     return NextResponse.redirect(url);
   }
 
   if (pathnameHasLocale) return;
 
   // Redirect if there is no locale
-  // Try to get locale from cookie, fallback to default
   const locale = request.cookies.get("NEXT_LOCALE")?.value || defaultLocale;
 
   const url = request.nextUrl.clone();
