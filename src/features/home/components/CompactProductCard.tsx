@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Product } from "../types/home.types";
+import { useAuthStore } from "@/stores/auth";
 
 interface CompactProductCardProps {
   product: Product;
@@ -10,6 +11,8 @@ export default function CompactProductCard({
   product,
   locale,
 }: CompactProductCardProps) {
+  const { isAuthenticated } = useAuthStore();
+
   return (
     <Link href={`/${locale}/products/${product.id}`} className="group block">
       <div className="relative aspect-square overflow-hidden bg-gray-100 rounded-lg mb-4">
@@ -26,9 +29,11 @@ export default function CompactProductCard({
         <p className="text-sm text-gray-500 dark:text-gray-400">
           {product.category_names.join(", ")}
         </p>
-        <p className="text-sm font-bold text-gray-900 dark:text-gray-100">
-          {product.price} Ks
-        </p>
+        {isAuthenticated() && (
+          <p className="text-sm font-bold text-gray-900 dark:text-gray-100">
+            {product.price} Ks
+          </p>
+        )}
       </div>
     </Link>
   );

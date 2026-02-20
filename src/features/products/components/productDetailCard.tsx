@@ -1,7 +1,7 @@
 "use client";
-
 import { Product } from "@/features/products/types/product.types";
 import { useState } from "react";
+import { useAuthStore } from "@/stores/auth";
 
 export const ProductDetailCard = ({
   product,
@@ -11,6 +11,7 @@ export const ProductDetailCard = ({
   locale: string;
 }) => {
   const [activePhoto, setActivePhoto] = useState(product.primary_photo);
+  const { isAuthenticated } = useAuthStore();
 
   const isMM = locale === "mm";
   const name = isMM ? product.name_other : product.name;
@@ -90,11 +91,13 @@ export const ProductDetailCard = ({
               className="text-gray-600 dark:text-gray-300 text-lg leading-relaxed mb-8 prose dark:prose-invert max-w-none"
               dangerouslySetInnerHTML={{ __html: formattedDescription }}
             />
-            <div className="flex items-baseline gap-4">
-              <span className="text-5xl font-black text-indigo-600 dark:text-indigo-400">
-                {product.price} Ks
-              </span>
-            </div>
+            {isAuthenticated() && (
+              <div className="flex items-baseline gap-4">
+                <span className="text-5xl font-black text-indigo-600 dark:text-indigo-400">
+                  {product.price} Ks
+                </span>
+              </div>
+            )}
           </div>
 
           <div className="grid grid-cols-2 gap-4 mt-auto">

@@ -10,6 +10,7 @@ import { ProductListResponse } from "../types/product.types";
 import { useEffect, useRef, useState } from "react";
 import SearchBar from "@/components/common/SearchBar";
 import SingleSelect from "@/components/common/SingleSelect";
+import { useAuthStore } from "@/stores/auth";
 
 interface ProductsClientProps {
   locale: string;
@@ -24,6 +25,7 @@ export default function ProductsClient({
 }: ProductsClientProps) {
   const [mounted, setMounted] = useState(false);
   const observerRef = useRef<HTMLDivElement>(null);
+  const { isAuthenticated } = useAuthStore();
 
   // Filter states
   const [search, setSearch] = useState("");
@@ -139,7 +141,7 @@ export default function ProductsClient({
         ) : allProducts.length === 0 ? (
           <div className="text-center py-20">
             <h3 className="text-xl font-medium text-gray-600 dark:text-gray-400">
-              No products foundmatching your criteria
+              No products found matching your criteria
             </h3>
           </div>
         ) : (
@@ -170,11 +172,13 @@ export default function ProductsClient({
                     <h2 className="text-lg font-bold mb-2 text-gray-800 dark:text-white line-clamp-2 min-h-[3.5rem]">
                       {name}
                     </h2>
-                    <div className="flex items-center justify-between mt-4">
-                      <span className="text-2xl font-black text-indigo-600 dark:text-indigo-400">
-                        {product.price} Ks
-                      </span>
-                    </div>
+                    {isAuthenticated() && (
+                      <div className="flex items-center justify-between mt-4">
+                        <span className="text-2xl font-black text-indigo-600 dark:text-indigo-400">
+                          {product.price} Ks
+                        </span>
+                      </div>
+                    )}
                   </div>
                 </Link>
               );

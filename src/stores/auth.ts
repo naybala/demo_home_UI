@@ -1,19 +1,20 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
+interface UserInfo {
+  id: number;
+  fullname: string;
+  email: string;
+  avatar: string;
+}
+
 interface AuthState {
   token: string | null;
-  userId: number | null;
-  name: string | null;
-  roleId: number | null;
-  setAuthData: (data: {
-    token: string;
-    userId: number;
-    name: string;
-    roleId: number;
-  }) => void;
+  user: UserInfo | null;
+  setAuthData: (token: string, user: UserInfo) => void;
   setToken: (token: string) => void;
   clearAuthData: () => void;
+  logout: () => Promise<void>;
   isAuthenticated: () => boolean;
 }
 
@@ -21,32 +22,44 @@ export const useAuthStore = create<AuthState>()(
   persist(
     (set, get) => ({
       token: null,
-      userId: null,
-      name: null,
-      roleId: null,
+      user: null,
 
-      setAuthData: (data) => set({ ...data }),
+      setAuthData: (token, user) => set({ token, user }),
 
       setToken: (token) => set({ token }),
 
       clearAuthData: () =>
         set({
           token: null,
-          userId: null,
-          name: null,
-          roleId: null,
+          user: null,
         }),
+
+      logout: async () => {
+        const { user } = get();
+        if (user) {
+          try {
+            const apiUrl =
+              process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+            await fetch(`${apiUrl}/api/v1/spa/logout`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${get().token}`,
+              },
+              body: JSON.stringify({ id: user.id }),
+            });
+          } catch (error) {
+            console.error("Logout API failed:", error);
+          }
+        }
+        set({ token: null, user: null });
+      },
 
       isAuthenticated: () => !!get().token,
     }),
     {
       name: "auth-storage",
-      // Exclude functions from persistence as they cannot be serialized
-      partialize: (state) => ({
-        userId: state.userId,
-        name: state.name,
-        roleId: state.roleId,
-      }),
+      // Persist the token and user data
     },
   ),
 );

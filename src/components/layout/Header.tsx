@@ -9,15 +9,31 @@ import { NavLinks } from "./NavLinks";
 import Logo from "@/public/images/logo.png";
 import AuthModal from "@/features/auth/components/AuthModal";
 
+import { useAuthStore } from "@/stores/auth";
+
 export default function Header({ t }: { t: any }) {
   const router = useRouter();
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [isAuthOpen, setIsAuthOpen] = useState(false);
 
+  const { isAuthenticated, user, logout } = useAuthStore();
   const toggleSidebar = () => setIsOpen(!isOpen);
   const closeSidebar = () => setIsOpen(false);
   const style: string = "px-3 py-1 border rounded";
+
+  const handleLogout = async () => {
+    if (window.confirm("Are you sure you want to logout?")) {
+      await logout();
+    }
+  };
+
+  const getAvatarUrl = (path: string | null | undefined) => {
+    if (!path) return "";
+    if (path.startsWith("http")) return path;
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+    return `${apiUrl}${path}`;
+  };
 
   const handleScrollTo = (sectionId: string) => {
     const segments = pathname.split("/");
@@ -57,11 +73,27 @@ export default function Header({ t }: { t: any }) {
 
           <div className="hidden lg:flex items-center gap-4">
             <NavLinks className="px-3 py-1" t={t} />
-            <i
-              onClick={() => setIsAuthOpen(true)}
-              className="pi pi-user cursor-pointer hover:text-blue-500 transition-colors"
-              style={{ fontSize: "1.2rem" }}
-            ></i>
+            {isAuthenticated() ? (
+              <div className="flex items-center gap-3 bg-white/50 dark:bg-gray-800/50 px-3 py-1.5 rounded-full border border-gray-200 dark:border-gray-700">
+                <img
+                  src={getAvatarUrl(user?.avatar)}
+                  alt={user?.fullname || "User"}
+                  className="w-7 h-7 rounded-full border border-gray-300 dark:border-gray-600 object-cover"
+                />
+                <button
+                  onClick={handleLogout}
+                  className="text-xs font-bold text-red-500 hover:text-red-600 transition-colors uppercase tracking-wider"
+                >
+                  Logout
+                </button>
+              </div>
+            ) : (
+              <i
+                onClick={() => setIsAuthOpen(true)}
+                className="pi pi-user cursor-pointer hover:text-blue-500 transition-colors"
+                style={{ fontSize: "1.2rem" }}
+              ></i>
+            )}
             <LanguageSwitcher className={style} />
             <ThemeToggle />
           </div>

@@ -1,6 +1,5 @@
-"use client";
-
 import React, { useState } from "react";
+import { useAuthStore } from "@/stores/auth";
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -10,6 +9,47 @@ interface AuthModalProps {
 export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
   const [isSignUp, setIsSignUp] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const { setAuthData } = useAuthStore();
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const apiUrl = process.env.NEXT_PUBLIC_LOCAL_URL;
+      const response = await fetch(`${apiUrl}/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const result = await response.json();
+
+      if (response.ok && result.status === "success") {
+        setAuthData(result.data.token, result.data.user_info);
+        onClose();
+        // Reset form
+        setEmail("");
+        setPassword("");
+      } else {
+        setError(result.message || "Login failed");
+      }
+    } catch (err) {
+      console.error("Login error:", err);
+      setError("An error occurred during login");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   if (!isOpen) return null;
 
@@ -32,12 +72,20 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
             <h2 className="text-4xl font-black text-gray-800 dark:text-white mb-8">
               Sign in
             </h2>
-            <div className="w-full max-w-sm space-y-4">
+            <form onSubmit={handleLogin} className="w-full max-w-sm space-y-4">
+              {error && (
+                <div className="p-3 bg-red-100 border border-red-400 text-red-700 rounded-xl text-sm italic">
+                  {error}
+                </div>
+              )}
               <div className="relative">
                 <i className="pi pi-user absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
                 <input
-                  type="text"
-                  placeholder="Username"
+                  type="email"
+                  placeholder="Email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
                   className="w-full pl-12 pr-4 py-3.5 bg-gray-50 dark:bg-gray-900 border border-transparent focus:border-blue-500 rounded-2xl outline-none text-gray-800 dark:text-white"
                 />
               </div>
@@ -46,6 +94,9 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
                 <input
                   type={showPassword ? "text" : "password"}
                   placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
                   className="w-full pl-12 pr-12 py-3.5 bg-gray-50 dark:bg-gray-900 border border-transparent focus:border-blue-500 rounded-2xl outline-none text-gray-800 dark:text-white"
                 />
                 <button
@@ -58,10 +109,17 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
                   ></i>
                 </button>
               </div>
-              <button className="w-full py-4 bg-primary hover:bg-blue-600 text-white font-bold rounded-2xl shadow-lg transition-all active:scale-95 uppercase tracking-wider text-sm">
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="w-full py-4 bg-primary hover:bg-blue-600 text-white font-bold rounded-2xl shadow-lg transition-all active:scale-95 uppercase tracking-wider text-sm disabled:opacity-50"
+              >
+                {isLoading ? (
+                  <i className="pi pi-spin pi-spinner mr-2"></i>
+                ) : null}
                 Sign In
               </button>
-            </div>
+            </form>
             <i
               className="pi pi-google mt-10 cursor-pointer"
               style={{ fontSize: "2rem" }}
@@ -130,30 +188,41 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
             <h2 className="text-3xl font-black text-gray-800 dark:text-white mb-6 animate-in fade-in transition-all">
               {isSignUp ? "Sign up" : "Sign in"}
             </h2>
-            <div className="w-full max-w-sm space-y-3">
-              <div className="relative">
-                <i className="pi pi-user absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                <input
-                  type="text"
-                  placeholder={isSignUp ? "Full Name" : "Username"}
-                  className="w-full pl-12 pr-4 py-3.5 bg-gray-50 dark:bg-gray-900 rounded-2xl outline-none text-gray-800 dark:text-white"
-                />
-              </div>
-              {isSignUp && (
-                <div className="relative animate-in fade-in">
-                  <i className="pi pi-envelope absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+            <form onSubmit={handleLogin} className="w-full max-w-sm space-y-3">
+              {error && (
+                <div className="p-3 bg-red-100 border border-red-400 text-red-700 rounded-xl text-sm italic">
+                  {error}
+                </div>
+              )}
+              {isSignUp ? (
+                <div className="relative">
+                  <i className="pi pi-user absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
                   <input
-                    type="email"
-                    placeholder="Email"
+                    type="text"
+                    placeholder="Full Name"
                     className="w-full pl-12 pr-4 py-3.5 bg-gray-50 dark:bg-gray-900 rounded-2xl outline-none text-gray-800 dark:text-white"
                   />
                 </div>
-              )}
+              ) : null}
+              <div className="relative">
+                <i className="pi pi-envelope absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                <input
+                  type="email"
+                  placeholder="Email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  className="w-full pl-12 pr-4 py-3.5 bg-gray-50 dark:bg-gray-900 rounded-2xl outline-none text-gray-800 dark:text-white"
+                />
+              </div>
               <div className="relative">
                 <i className="pi pi-lock absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
                 <input
                   type={showPassword ? "text" : "password"}
                   placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
                   className="w-full pl-12 pr-12 py-3.5 bg-gray-50 dark:bg-gray-900 rounded-2xl outline-none text-gray-800 dark:text-white"
                 />
                 <button
@@ -176,10 +245,18 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
                   />
                 </div>
               )}
-              <button className="w-full py-4 bg-primary text-white font-bold rounded-2xl">
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="w-full py-4 bg-primary text-white font-bold rounded-2xl disabled:opacity-50"
+              >
+                {isLoading ? (
+                  <i className="pi pi-spin pi-spinner mr-2"></i>
+                ) : null}
                 {isSignUp ? "Sign Up" : "Sign In"}
               </button>
               <button
+                type="button"
                 onClick={() => setIsSignUp(!isSignUp)}
                 className="w-full text-blue-500 font-bold text-sm"
               >
@@ -187,7 +264,7 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
                   ? "Already have an account? Sign In"
                   : "Don't have an account? Sign Up"}
               </button>
-            </div>
+            </form>
           </div>
         </div>
 
