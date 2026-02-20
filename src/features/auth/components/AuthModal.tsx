@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useAuthStore } from "@/stores/auth";
+import { apiClient } from "@/utils/api.client";
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -22,19 +23,12 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
     setError(null);
 
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_LOCAL_URL;
-      const response = await fetch(`${apiUrl}/login`, {
+      const result = await apiClient<any>(`/login`, true, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      });
+        body: { email, password },
+      } as any);
 
-      const result = await response.json();
-
-      if (response.ok && result.status === "success") {
+      if (result.status === "success") {
         setAuthData(result.data.token, result.data.user_info);
         onClose();
         // Reset form
@@ -43,9 +37,9 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
       } else {
         setError(result.message || "Login failed");
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error("Login error:", err);
-      setError("An error occurred during login");
+      setError(err.message || "An error occurred during login");
     } finally {
       setIsLoading(false);
     }

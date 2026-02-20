@@ -4,6 +4,10 @@ import {
   ProductListResponse,
 } from "../types/product.types";
 import { apiServer } from "@/utils/api.server";
+import { apiClient } from "@/utils/api.client";
+
+const getFetcher = () =>
+  typeof window !== "undefined" ? apiClient : apiServer;
 
 export const ProductsAPI = {
   getProducts: async (
@@ -16,14 +20,16 @@ export const ProductsAPI = {
     if (categoryId) url += `&category_id=${categoryId}`;
     if (search) url += `&search=${search}`;
 
-    const res = await apiServer<ProductListResponse>(url, true, {
+    const fetcher = getFetcher();
+    const res = await fetcher<ProductListResponse>(url, true, {
       // next: { revalidate: 60 },
     });
     return res;
   },
 
   getProduct: async (id: string | number): Promise<ProductDetailResponse> => {
-    const res = await apiServer<ProductDetailResponse>(
+    const fetcher = getFetcher();
+    const res = await fetcher<ProductDetailResponse>(
       `/products/${id}`,
       true,
       // {
@@ -34,13 +40,10 @@ export const ProductsAPI = {
   },
 
   getCategories: async (): Promise<CategoryResponse> => {
-    const res = await apiServer<CategoryResponse>(
-      "/fetch-all-categories",
-      true,
-      {
-        next: { revalidate: 3600 },
-      },
-    );
+    const fetcher = getFetcher();
+    const res = await fetcher<CategoryResponse>("/fetch-all-categories", true, {
+      next: { revalidate: 3600 },
+    } as any);
     return res;
   },
 };

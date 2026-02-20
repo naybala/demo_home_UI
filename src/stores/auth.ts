@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import { apiClient } from "@/utils/api.client";
 
 interface UserInfo {
   id: number;
@@ -38,16 +39,10 @@ export const useAuthStore = create<AuthState>()(
         const { user } = get();
         if (user) {
           try {
-            const apiUrl =
-              process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
-            await fetch(`${apiUrl}/api/v1/spa/logout`, {
+            await apiClient(`/logout`, true, {
               method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${get().token}`,
-              },
-              body: JSON.stringify({ id: user.id }),
-            });
+              body: { id: user.id },
+            } as any);
           } catch (error) {
             console.error("Logout API failed:", error);
           }

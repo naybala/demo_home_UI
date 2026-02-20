@@ -8,6 +8,18 @@ export async function apiServer<T>(
     body = JSON.stringify(body);
   }
 
+  // Forward cookies from the client to the backend for server-side requests
+  let cookieHeader = "";
+  if (typeof window === "undefined") {
+    try {
+      const { cookies } = await import("next/headers");
+      const cookieStore = await cookies();
+      cookieHeader = cookieStore.toString();
+    } catch (e) {
+      // cookies() might fail if not called in a request context
+    }
+  }
+
   const fullUrl = `${isLocal ? process.env.NEXT_PUBLIC_LOCAL_URL : process.env.NEXT_PUBLIC_API_URL}${api}`;
 
   try {
@@ -17,6 +29,7 @@ export async function apiServer<T>(
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
+        Cookie: cookieHeader,
         ...options.headers,
       },
       // Use the provided cache or next.revalidate if present, otherwise default to no-store for safety
