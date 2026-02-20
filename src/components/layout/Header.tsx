@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import MobileNav from "./MobileNav";
 import ThemeToggle from "../common/ThemeToggle";
@@ -20,23 +20,31 @@ export default function Header({ t }: { t: any }) {
   const [isAuthOpen, setIsAuthOpen] = useState(false);
 
   const { isAuthenticated, user, logout } = useAuthStore();
+  const [mounted, setMounted] = useState(false);
   const toggleSidebar = () => setIsOpen(!isOpen);
   const closeSidebar = () => setIsOpen(false);
   const style: string = "px-3 py-1 border rounded";
 
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const toastShownRef = useRef(false);
+
   // Show toast when redirected from a protected route
   useEffect(() => {
-    if (searchParams.get("unauthorized") === "true") {
+    if (searchParams.get("unauthorized") === "true" && !toastShownRef.current) {
+      toastShownRef.current = true;
+      // Clean the URL first so effect doesn't re-trigger
+      router.replace(window.location.pathname);
       (window as any).toast?.show({
-        severity: "warn",
+        severity: "error",
         summary: "Access Denied",
         detail: "Please login to access this page.",
         life: 4000,
+        className: "bg-red-600 border-red-700",
+        contentClassName: "bg-red-600 text-white",
       });
-      // Clean the URL without reloading the page
-      const url = new URL(window.location.href);
-      url.searchParams.delete("unauthorized");
-      router.replace(url.pathname);
     }
   }, [searchParams]);
 
@@ -98,26 +106,31 @@ export default function Header({ t }: { t: any }) {
 
           <div className="hidden lg:flex items-center gap-4">
             <NavLinks className="px-3 py-1" t={t} />
-            {isAuthenticated() ? (
-              <div className="flex items-center gap-3 bg-white/50 dark:bg-gray-800/50 px-3 py-1.5 rounded-full border border-gray-200 dark:border-gray-700">
-                <img
-                  src={getAvatarUrl(user?.avatar)}
-                  alt={user?.fullname || "User"}
-                  className="w-7 h-7 rounded-full border border-gray-300 dark:border-gray-600 object-cover"
-                />
-                <button
-                  onClick={handleLogout}
-                  className="text-xs font-bold text-red-500 hover:text-red-600 transition-colors uppercase tracking-wider"
-                >
-                  Logout
-                </button>
-              </div>
+            {mounted ? (
+              isAuthenticated() ? (
+                <div className="flex items-center gap-3 bg-white/50 dark:bg-gray-800/50 px-3 py-1.5 rounded-full border border-gray-200 dark:border-gray-700">
+                  <img
+                    src={getAvatarUrl(user?.avatar)}
+                    alt={user?.fullname || "User"}
+                    className="w-7 h-7 rounded-full border border-gray-300 dark:border-gray-600 object-cover"
+                  />
+                  <button
+                    onClick={handleLogout}
+                    className="text-xs font-bold text-red-500 hover:text-red-600 transition-colors uppercase tracking-wider"
+                  >
+                    Logout
+                  </button>
+                </div>
+              ) : (
+                <i
+                  onClick={() => setIsAuthOpen(true)}
+                  className="pi pi-user cursor-pointer hover:text-blue-500 transition-colors"
+                  style={{ fontSize: "1.2rem" }}
+                ></i>
+              )
             ) : (
-              <i
-                onClick={() => setIsAuthOpen(true)}
-                className="pi pi-user cursor-pointer hover:text-blue-500 transition-colors"
-                style={{ fontSize: "1.2rem" }}
-              ></i>
+              // SSR / pre-mount placeholder — matches server output, no flicker
+              <div className="w-5 h-5" />
             )}
             <LanguageSwitcher className={style} />
             <ThemeToggle />

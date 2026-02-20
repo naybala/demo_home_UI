@@ -22,26 +22,16 @@ export default function Providers({ children }: ProvidersProps) {
       }),
   );
   const { isDark } = useThemeStore();
-  const [mounted, setMounted] = useState(false);
 
+  // Sync theme from Zustand store to the document class (client-only)
+  // The initial theme is already server-applied via html className in layout.tsx
   useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  useEffect(() => {
-    if (mounted) {
-      if (isDark) {
-        document.documentElement.classList.add("dark");
-      } else {
-        document.documentElement.classList.remove("dark");
-      }
+    if (isDark) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
     }
-  }, [isDark, mounted]);
-
-  // Prevent hydration mismatch
-  if (!mounted) {
-    return null;
-  }
+  }, [isDark]);
 
   return (
     <QueryClientProvider client={queryClient}>
