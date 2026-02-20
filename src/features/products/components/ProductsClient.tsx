@@ -172,7 +172,7 @@ export default function ProductsClient({
                     <h2 className="text-lg font-bold mb-2 text-gray-800 dark:text-white line-clamp-2 min-h-[3.5rem]">
                       {name}
                     </h2>
-                    {isAuthenticated() && (
+                    {mounted && isAuthenticated() && (
                       <div className="flex items-center justify-between mt-4">
                         <span className="text-2xl font-black text-indigo-600 dark:text-indigo-400">
                           {product.price} Ks

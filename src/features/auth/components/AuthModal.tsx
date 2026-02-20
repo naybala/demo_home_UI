@@ -37,6 +37,15 @@ export default function AuthModal({
         setUser(result.data.user_info);
         // Set a cookie for middleware-based route protection
         document.cookie = "logged_in=true; path=/; SameSite=Lax";
+        // Show login success toast
+        (window as any).toast?.show({
+          severity: "danger",
+          summary: "Welcome back!",
+          detail: `Logged in as ${result.data.user_info.fullname}`,
+          life: 3000,
+          className: "bg-gray-400 border-gray-500",
+          contentClassName: "bg-gray-400 text-white",
+        });
         // Reset form
         setEmail("");
         setPassword("");

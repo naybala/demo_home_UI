@@ -28,10 +28,12 @@ export const useAuthStore = create<AuthState>()(
       clearAuthData: () => set({ user: null }),
 
       logout: async () => {
+        const { user } = get();
         try {
           await apiClient(`/logout`, true, {
             method: "POST",
-          });
+            body: { id: user?.id },
+          } as any);
         } catch (error) {
           console.error("Logout API failed:", error);
         }
@@ -40,6 +42,18 @@ export const useAuthStore = create<AuthState>()(
         document.cookie =
           "logged_in=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
         set({ user: null });
+
+        // Show logout toast
+        if (typeof window !== "undefined") {
+          (window as any).toast?.show({
+            severity: "danger",
+            summary: "Logged out",
+            detail: "You have been logged out successfully.",
+            life: 3000,
+            className: "bg-gray-400 border-gray-500",
+            contentClassName: "bg-gray-400 text-white",
+          });
+        }
       },
 
       isAuthenticated: () => !!get().user,
