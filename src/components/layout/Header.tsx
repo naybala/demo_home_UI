@@ -10,6 +10,7 @@ import Logo from "@/public/images/logo.png";
 import AuthModal from "@/features/auth/components/AuthModal";
 
 import { useAuthStore } from "@/stores/auth";
+import { confirmDialog } from "primereact/confirmdialog";
 
 export default function Header({ t }: { t: any }) {
   const router = useRouter();
@@ -22,10 +23,17 @@ export default function Header({ t }: { t: any }) {
   const closeSidebar = () => setIsOpen(false);
   const style: string = "px-3 py-1 border rounded";
 
-  const handleLogout = async () => {
-    if (window.confirm("Are you sure you want to logout?")) {
-      await logout();
-    }
+  const handleLogout = () => {
+    confirmDialog({
+      message: "Are you sure you want to logout?",
+      header: "Confirmation",
+      icon: "pi pi-exclamation-triangle",
+      acceptClassName: "px-2 rounded-lg ml-2",
+      rejectClassName: "px-2 rounded-lg mr-2",
+      accept: async () => {
+        await logout();
+      },
+    });
   };
 
   const getAvatarUrl = (path: string | null | undefined) => {
