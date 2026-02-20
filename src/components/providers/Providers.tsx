@@ -47,13 +47,7 @@ export default function Providers({ children }: ProvidersProps) {
     <QueryClientProvider client={queryClient}>
       <PrimeReactProvider>
         {children}
-        <Toast
-          ref={(el) => {
-            if (typeof window !== "undefined") {
-              (window as any).toast = el;
-            }
-          }}
-        />
+        <Toast />
         <ConfirmDialog />
       </PrimeReactProvider>
     </QueryClientProvider>

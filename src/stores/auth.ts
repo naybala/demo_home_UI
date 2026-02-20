@@ -10,10 +10,9 @@ interface UserInfo {
 }
 
 interface AuthState {
-  token: string | null;
   user: UserInfo | null;
-  setAuthData: (token: string, user: UserInfo) => void;
-  setToken: (token: string) => void;
+
+  setUser: (user: UserInfo | null) => void;
   clearAuthData: () => void;
   logout: () => Promise<void>;
   isAuthenticated: () => boolean;
@@ -22,39 +21,32 @@ interface AuthState {
 export const useAuthStore = create<AuthState>()(
   persist(
     (set, get) => ({
-      token: null,
       user: null,
 
-      setAuthData: (token, user) => set({ token, user }),
+      setUser: (user) => set({ user }),
 
-      setToken: (token) => set({ token }),
-
-      clearAuthData: () =>
-        set({
-          token: null,
-          user: null,
-        }),
+      clearAuthData: () => set({ user: null }),
 
       logout: async () => {
-        const { user } = get();
-        if (user) {
-          try {
-            await apiClient(`/logout`, true, {
-              method: "POST",
-              body: { id: user.id },
-            } as any);
-          } catch (error) {
-            console.error("Logout API failed:", error);
-          }
+        try {
+          await apiClient(`/logout`, true, {
+            method: "POST",
+          });
+        } catch (error) {
+          console.error("Logout API failed:", error);
         }
-        set({ token: null, user: null });
+
+        // Clear user state only
+        set({ user: null });
       },
 
-      isAuthenticated: () => !!get().token,
+      isAuthenticated: () => !!get().user,
     }),
     {
       name: "auth-storage",
-      // Persist the token and user data
+      partialize: (state) => ({
+        user: state.user, // only persist user
+      }),
     },
   ),
 );

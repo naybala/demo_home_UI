@@ -15,7 +15,7 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const { setAuthData } = useAuthStore();
+  const { setUser } = useAuthStore();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -29,7 +29,7 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
       } as any);
 
       if (result.status === "success") {
-        setAuthData(result.data.token, result.data.user_info);
+        setUser(result.data.user_info);
         onClose();
         // Reset form
         setEmail("");
