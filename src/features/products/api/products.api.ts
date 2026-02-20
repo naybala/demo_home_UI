@@ -16,8 +16,8 @@ export const ProductsAPI = {
     if (categoryId) url += `&category_id=${categoryId}`;
     if (search) url += `&search=${search}`;
 
-    const res = await apiServer<ProductListResponse>(url, false, {
-      next: { revalidate: 60 },
+    const res = await apiServer<ProductListResponse>(url, true, {
+      // next: { revalidate: 60 },
     });
     return res;
   },
@@ -25,7 +25,7 @@ export const ProductsAPI = {
   getProduct: async (id: string | number): Promise<ProductDetailResponse> => {
     const res = await apiServer<ProductDetailResponse>(
       `/products/${id}`,
-      false,
+      true,
       // {
       //   next: { revalidate: 60 },
       // },
@@ -36,7 +36,7 @@ export const ProductsAPI = {
   getCategories: async (): Promise<CategoryResponse> => {
     const res = await apiServer<CategoryResponse>(
       "/fetch-all-categories",
-      false,
+      true,
       {
         next: { revalidate: 3600 },
       },

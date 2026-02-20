@@ -1,6 +1,6 @@
 export async function apiServer<T>(
   api: string,
-  isFakeStore = false,
+  isLocal = false,
   options: RequestInit & { body?: any; next?: NextFetchRequestConfig } = {},
 ): Promise<T> {
   let body = options.body;
@@ -8,8 +8,7 @@ export async function apiServer<T>(
     body = JSON.stringify(body);
   }
 
-  // const fullUrl = `${isFakeStore ? process.env.NEXT_PUBLIC_BASE_URL : process.env.NEXT_PUBLIC_API_URL}${api}`;
-  const fullUrl = `https://nonresponsibly-internasal-tonette.ngrok-free.dev/api/v1/spa${api}`;
+  const fullUrl = `${isLocal ? process.env.NEXT_PUBLIC_LOCAL_URL : process.env.NEXT_PUBLIC_API_URL}${api}`;
 
   try {
     const res = await fetch(fullUrl, {

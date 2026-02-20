@@ -1,4 +1,3 @@
-// app/[locale]/providers.tsx
 "use client";
 
 import { PrimeReactProvider } from "primereact/api";

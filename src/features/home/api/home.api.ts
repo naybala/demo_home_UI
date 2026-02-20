@@ -3,7 +3,7 @@ import { HomeApiResponse } from "../types/home.types";
 
 export const HomeAPI = {
   getHomeData: async (): Promise<HomeApiResponse> => {
-    const res = await apiServer<HomeApiResponse>("/home", false, {
+    const res = await apiServer<HomeApiResponse>("/home", true, {
       next: { revalidate: 0 }, // Revalidate every hour
     });
     return res;

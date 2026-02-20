@@ -3,7 +3,7 @@ import { tryRefreshToken } from "./auth-refresh";
 
 export async function apiClient<T>(
   api: string,
-  isFakeStore = false,
+  isLocal = false,
   options: RequestInit & { body?: any } = {},
   retrying = false,
 ): Promise<T> {
@@ -22,12 +22,12 @@ export async function apiClient<T>(
 
   // Determine the base URL: Use empty string for local /api routes,
   // otherwise choose between FakeStore and Properties API.
-  // const baseUrl = api.startsWith("/api")
-  //   ? ""
-  //   : isFakeStore
-  //     ? process.env.NEXT_PUBLIC_BASE_URL
-  //     : process.env.NEXT_PUBLIC_API_URL;
-  const baseUrl = `https://nonresponsibly-internasal-tonette.ngrok-free.dev/api/v1/spa`;
+  const baseUrl = api.startsWith("/api")
+    ? ""
+    : isLocal
+      ? process.env.NEXT_PUBLIC_LOCAL_URL
+      : process.env.NEXT_PUBLIC_API_URL;
+  //const baseUrl = `https://nonresponsibly-internasal-tonette.ngrok-free.dev/api/v1/spa`;
 
   const res = await fetch(`${baseUrl}${api}`, {
     ...options,
@@ -39,7 +39,7 @@ export async function apiClient<T>(
   if (res.status === 401 && !retrying) {
     const refreshed = await tryRefreshToken();
     if (refreshed) {
-      return apiClient<T>(api, isFakeStore, options, true);
+      return apiClient<T>(api, isLocal, options, true);
     }
 
     clearAuthData();
