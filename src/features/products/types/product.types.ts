@@ -12,6 +12,7 @@ export interface Product {
   primary_photo: string;
   is_banner: boolean;
   is_mini_banner: boolean;
+  video?: string;
 }
 
 export interface PaginatedData<T> {

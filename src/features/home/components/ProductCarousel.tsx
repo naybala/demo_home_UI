@@ -56,8 +56,7 @@ export default function ProductCarousel({
               href={`/${locale}/products`}
               className="text-white font-black uppercase tracking-[0.2em] text-[13px] flex items-center gap-3 hover:gap-5 transition-all group drop-shadow-lg"
             >
-              <i className="pi pi-minus text-xs transform -translate-y-[1px]"></i>
-              <span>View all the products</span>
+              <span></span>
             </Link>
           </div>
         </div>
@@ -131,7 +130,7 @@ export default function ProductCarousel({
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
           {isBg && (
-            <div className="hidden md:block w-1/2 flex-none pointer-events-none" />
+            <div className="hidden md:block w-1/2 flex-none pointer-events-none snap-start" />
           )}
           {products.map((product) => (
             <div
@@ -152,13 +151,14 @@ export default function ProductCarousel({
           <>
             <button
               onClick={() => scroll("left")}
-              className="absolute left-0 top-1/2 -translate-y-1/2 w-14 h-14 bg-white/90 backdrop-blur rounded-full shadow-xl z-20 hover:bg-red-600 hover:text-white transition-all active:scale-90 hidden md:flex md:items-center md:justify-center ml-4 pointer-events-auto border border-gray-100 dark:border-gray-800"
+              className="absolute left-0 top-1/2 -translate-y-1/2 w-14 h-14 bg-white/90 dark:bg-gray-800 backdrop-blur rounded-full shadow-xl z-20 hover:bg-red-600 hover:text-white transition-all active:scale-90 hidden md:flex md:items-center md:justify-center ml-4 pointer-events-auto border border-gray-100 dark:border-gray-800"
             >
               <i className="pi pi-chevron-left text-xl"></i>
             </button>
             <button
               onClick={() => scroll("right")}
-              className="absolute right-0 top-1/2 -translate-y-1/2 w-14 h-14 bg-white/90 backdrop-blur rounded-full shadow-xl z-20 hover:bg-red-600 hover:text-white transition-all active:scale-90 hidden md:flex md:items-center md:justify-center mr-4 pointer-events-auto border border-gray-100 dark:border-gray-800"
+              className="absolute right-0 top-1/2 -translate-y-1/2 w-14 h-14 bg-white/90 
+              dark:bg-gray-800 backdrop-blur rounded-full shadow-xl z-20 hover:bg-red-600 hover:text-white transition-all active:scale-90 hidden md:flex md:items-center md:justify-center mr-4 pointer-events-auto border border-gray-100 dark:border-gray-800"
             >
               <i className="pi pi-chevron-right text-xl"></i>
             </button>
