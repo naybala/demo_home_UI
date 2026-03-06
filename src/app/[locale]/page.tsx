@@ -4,7 +4,6 @@ import HeroBanner from "@/features/home/components/HeroBanner";
 import FeaturedGrid from "@/features/home/components/FeaturedGrid";
 import ProductCarousel from "@/features/home/components/ProductCarousel";
 import LocationSection from "@/features/home/components/LocationSection";
-import HeroBannerVideo from "@/features/home/components/HeroBannerVideo";
 
 export default async function Page({
   params,

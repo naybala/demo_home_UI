@@ -141,7 +141,11 @@ export default function ProductCarousel({
                   : "min-w-[280px] md:min-w-[350px]"
               }`}
             >
-              <CompactProductCard product={product} locale={locale} />
+              <CompactProductCard
+                product={product}
+                locale={locale}
+                isBg={isBg}
+              />
             </div>
           ))}
         </div>

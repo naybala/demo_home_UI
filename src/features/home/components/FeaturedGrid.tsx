@@ -25,7 +25,7 @@ export default function FeaturedGrid({
             className="relative group aspect-[3/2] md:aspect-[6/5] overflow-hidden bg-gray-100 "
           >
             <img
-              src={product.primary_photo}
+              src={product.cover_photo}
               alt={product.name}
               className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
             />

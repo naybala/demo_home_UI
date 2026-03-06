@@ -151,7 +151,7 @@ export default function Header({ t }: { t: any }) {
                 style={{ fontSize: "1.8rem" }}
               ></i>
               <p className="text-2xl font-bold">Time</p>
-              <p className="text-2xl font-bold text-red-600">On You</p>
+              <p className="text-2xl font-bold text-red-600 ms-1">On You</p>
             </Link>
           </div>
 

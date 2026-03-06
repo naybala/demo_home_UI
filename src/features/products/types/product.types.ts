@@ -13,6 +13,7 @@ export interface Product {
   is_banner: boolean;
   is_mini_banner: boolean;
   video?: string;
+  cover_photo?: string;
 }
 
 export interface PaginatedData<T> {

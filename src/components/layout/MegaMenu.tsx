@@ -98,7 +98,7 @@ export default function MegaMenu({ isOpen, onClose, t }: MegaMenuProps) {
     } finally {
       setTimeout(() => {
         setLoading(false);
-      }, 100);
+      }, 800);
     }
   }, []);
 
@@ -193,22 +193,31 @@ export default function MegaMenu({ isOpen, onClose, t }: MegaMenuProps) {
 
         {/* ── Scrollable content */}
         <div className="flex-1 overflow-y-auto px-4 pb-8">
-          {/* Hero image */}
-          <div className="relative w-full aspect-[16/7] rounded-2xl overflow-hidden mt-4 mb-5 shadow-md">
-            <img
-              src={selectedSubCategory?.image || "default"}
-              alt={selectedSubCategory?.label || "Category"}
-              className="w-full h-full object-cover"
+          {loading ? (
+            <div
+              key={1}
+              className="w-full aspect-[4/5] bg-gray-200 dark:bg-gray-800 animate-pulse rounded-xl"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex flex-col justify-end p-5">
-              <h4 className="text-white text-2xl font-black uppercase tracking-tight leading-none mb-1">
-                {selectedSubCategory?.label}
-              </h4>
-              <p className="text-white/80 text-[9px] uppercase font-bold tracking-[0.35em]">
-                Discover the Collection
-              </p>
-            </div>
-          </div>
+          ) : (
+            <>
+              {/* Hero image */}
+              <div className="relative w-full aspect-[16/7] rounded-2xl overflow-hidden mt-4 mb-5 shadow-md">
+                <img
+                  src={selectedSubCategory?.image || "default"}
+                  alt={selectedSubCategory?.label || "Category"}
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex flex-col justify-end p-5">
+                  <h4 className="text-white text-2xl font-black uppercase tracking-tight leading-none mb-1">
+                    {selectedSubCategory?.label}
+                  </h4>
+                  <p className="text-white/80 text-[9px] uppercase font-bold tracking-[0.35em]">
+                    Discover the Collection
+                  </p>
+                </div>
+              </div>
+            </>
+          )}
 
           {/* Product grid — 2 columns */}
           {loading ? (
@@ -223,17 +232,48 @@ export default function MegaMenu({ isOpen, onClose, t }: MegaMenuProps) {
           ) : products.length > 0 ? (
             <div className="grid grid-cols-2 gap-3">
               {products.map((product) => (
-                <div key={product.id} className="group cursor-pointer">
-                  <div className="aspect-[4/5] bg-gray-50 dark:bg-gray-900 flex items-center justify-center p-3 mb-2 rounded-xl border border-transparent group-active:border-gray-200 dark:group-active:border-gray-700 transition-all">
+                <div
+                  key={product.id}
+                  className="group cursor-pointer relative pt-2 shadow-xl"
+                >
+                  {/* Cover Photo Background */}
+                  <div className="absolute top-0 left-0 w-full h-[65%] rounded-t-lg overflow-hidden z-0 shadow-sm border border-gray-100 dark:border-gray-800 transition-all">
+                    <img
+                      src={
+                        product.cover_photo ||
+                        "https://fastly.picsum.photos/id/250/200/300.jpg?hmac=igVdxs-AgITpHwPAZ80mpAfmhrGBvN_xThJlhp7vOqE"
+                      }
+                      alt={product.name}
+                      className="w-full h-full object-cover group-active:scale-105 transition-transform duration-700"
+                    />
+                    <div className="absolute top-0 left-0 w-full h-20 bg-gradient-to-b from-black/60 to-transparent" />
+                  </div>
+
+                  {/* Top Text / Badge overlay */}
+                  <div className="relative z-10 w-full flex items-center justify-center gap-1.5 pt-3 pb-2 px-2 text-white pointer-events-none">
+                    <svg
+                      className="w-3 h-3 flex-shrink-0"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                    >
+                      <circle cx="12" cy="12" r="3" />
+                      <path d="M2 12h7M15 12h7" strokeLinecap="round" />
+                    </svg>
+                    <span className="text-[10px] font-black uppercase tracking-[0.2em] pt-0.5 truncate drop-shadow-md">
+                      {product.name}
+                    </span>
+                  </div>
+
+                  {/* Primary Product Image Overlapping */}
+                  <div className="relative z-10 w-full aspect-[4/5] flex items-end justify-center pb-1 pointer-events-none">
                     <img
                       src={product.primary_photo}
                       alt={product.name}
-                      className="max-h-full max-w-full object-contain drop-shadow-lg"
+                      className="max-h-[90%] max-w-[85%] object-contain drop-shadow-2xl group-active:scale-110 group-active:-translate-y-1 transition-all duration-500"
                     />
                   </div>
-                  <h5 className="text-center font-black uppercase tracking-[0.15em] text-[10px] group-active:text-red-600 transition-colors px-1 truncate">
-                    {product.name}
-                  </h5>
                 </div>
               ))}
             </div>
@@ -298,21 +338,25 @@ export default function MegaMenu({ isOpen, onClose, t }: MegaMenuProps) {
               className="flex gap-8 overflow-x-auto no-scrollbar scroll-smooth items-start py-4"
             >
               {/* Hero card */}
-              <div className="relative flex-shrink-0 w-[550px] aspect-square bg-gray-50 dark:bg-gray-900 overflow-hidden group rounded-xl shadow-sm">
-                <img
-                  src={selectedSubCategory?.image || "default"}
-                  alt={selectedSubCategory?.label || "Category"}
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent group-hover:from-black/70 transition-colors flex flex-col justify-end p-10">
-                  <h4 className="text-white text-4xl font-black uppercase tracking-tighter leading-none mb-3">
-                    {selectedSubCategory?.label}
-                  </h4>
-                  <p className="text-white/90 text-[11px] uppercase font-bold tracking-[0.4em]">
-                    Discover the Collection
-                  </p>
+              {loading ? (
+                <div className="relative flex-shrink-0 w-[550px] aspect-square bg-gray-200 dark:bg-gray-800 animate-pulse rounded-xl shadow-sm" />
+              ) : (
+                <div className="relative flex-shrink-0 w-[550px] aspect-square bg-gray-50 dark:bg-gray-900 overflow-hidden group rounded-xl shadow-sm">
+                  <img
+                    src={selectedSubCategory?.image || "default"}
+                    alt={selectedSubCategory?.label || "Category"}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent group-hover:from-black/70 transition-colors flex flex-col justify-end p-10">
+                    <h4 className="text-white text-4xl font-black uppercase tracking-tighter leading-none mb-3">
+                      {selectedSubCategory?.label}
+                    </h4>
+                    <p className="text-white/90 text-[11px] uppercase font-bold tracking-[0.4em]">
+                      Discover the Collection
+                    </p>
+                  </div>
                 </div>
-              </div>
+              )}
 
               {loading ? (
                 Array.from({ length: 4 }).map((_, i) => (
@@ -325,18 +369,46 @@ export default function MegaMenu({ isOpen, onClose, t }: MegaMenuProps) {
                 products.map((product) => (
                   <div
                     key={product.id}
-                    className="flex-shrink-0 w-72 group cursor-pointer"
+                    className="flex-shrink-0 w-72 group cursor-pointer relative pt-4"
                   >
-                    <div className="aspect-[4/5] bg-gray-50 dark:bg-gray-900 flex items-center justify-center p-5 mb-4 group-hover:bg-gray-100 dark:group-hover:bg-gray-800/50 transition-all rounded-xl border border-transparent group-hover:border-gray-100 dark:group-hover:border-gray-800">
+                    {/* Cover Photo Background */}
+                    <div className="absolute top-0 left-0 w-full h-[65%] rounded-t-lg overflow-hidden z-0 shadow-sm border border-gray-100 dark:border-gray-800 transition-all group-hover:shadow-md">
+                      <img
+                        src={
+                          product.cover_photo ||
+                          "https://fastly.picsum.photos/id/250/200/300.jpg?hmac=igVdxs-AgITpHwPAZ80mpAfmhrGBvN_xThJlhp7vOqE"
+                        }
+                        alt={product.name}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 rounded-t-lg"
+                      />
+                      <div className="absolute top-0 left-0 w-full h-24 bg-gradient-to-b from-black/60 to-transparent" />
+                    </div>
+
+                    {/* Top Text / Badge overlay */}
+                    <div className="relative z-10 w-full flex items-center justify-center gap-2 pt-4 pb-2 px-4 text-white pointer-events-none">
+                      <svg
+                        className="w-3.5 h-3.5 flex-shrink-0"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                      >
+                        <circle cx="12" cy="12" r="3" />
+                        <path d="M2 12h7M15 12h7" strokeLinecap="round" />
+                      </svg>
+                      <span className="text-[12px] font-black uppercase tracking-[0.2em] pt-0.5 truncate drop-shadow-md">
+                        {product.name}
+                      </span>
+                    </div>
+
+                    {/* Primary Product Image Overlapping */}
+                    <div className="relative z-10 w-full aspect-[4/5] flex items-end justify-center pb-6 pointer-events-none">
                       <img
                         src={product.primary_photo}
                         alt={product.name}
-                        className="max-h-full max-w-full rounded-lg object-contain group-hover:scale-110 transition-transform duration-500 drop-shadow-2xl"
+                        className="max-h-[90%] max-w-[85%] object-contain drop-shadow-2xl group-hover:scale-110 group-hover:-translate-y-2 transition-all duration-500"
                       />
                     </div>
-                    <h5 className="text-center font-black uppercase tracking-[0.2em] text-[13px] group-hover:text-red-600 transition-colors px-4 truncate">
-                      {product.name}
-                    </h5>
                   </div>
                 ))
               ) : (
