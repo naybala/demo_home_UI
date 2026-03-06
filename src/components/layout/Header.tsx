@@ -6,7 +6,6 @@ import MobileNav from "./MobileNav";
 import ThemeToggle from "../common/ThemeToggle";
 import { LanguageSwitcher } from "../common/LanguageSwitcher";
 import Link from "next/link";
-import Logo from "@/public/images/logo.png";
 import AuthModal from "@/features/auth/components/AuthModal";
 import MegaMenu from "./MegaMenu";
 
@@ -20,15 +19,40 @@ export default function Header({ t }: { t: any }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAuthOpen, setIsAuthOpen] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
+  const lastScrollY = useRef(0);
 
   const { isAuthenticated, user, logout } = useAuthStore();
   const [mounted, setMounted] = useState(false);
-  const toggleSidebar = () => setIsOpen(!isOpen);
   const closeSidebar = () => setIsOpen(false);
-  const style: string = "px-3 py-1 border rounded";
 
   useEffect(() => {
     setMounted(true);
+  }, []);
+
+  // Hide header on scroll down, reveal on scroll up
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentY = window.scrollY;
+      const delta = currentY - lastScrollY.current;
+
+      if (currentY < 80) {
+        // Always show near the top of the page
+        setIsVisible(true);
+      } else if (delta > 8) {
+        // Scrolling down — hide
+        setIsVisible(false);
+        setIsMenuOpen(false); // also close mega menu
+      } else if (delta < -8) {
+        // Scrolling up — reveal
+        setIsVisible(true);
+      }
+
+      lastScrollY.current = currentY;
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const toastShownRef = useRef(false);
@@ -88,7 +112,11 @@ export default function Header({ t }: { t: any }) {
 
   return (
     <>
-      <header className="bg-white/80 dark:bg-[#0f1114]/80 backdrop-blur-md text-black dark:text-white shadow-sm px-4 py-3 fixed top-0 left-0 w-full z-50">
+      <header
+        className={`bg-white dark:bg-[#0f1114]/80 backdrop-blur-md text-black dark:text-white shadow-sm px-4 py-3 fixed top-0 left-0 w-full z-50 transition-transform duration-300 ease-in-out ${
+          isVisible ? "translate-y-0" : "-translate-y-full"
+        }`}
+      >
         <div className="container mx-auto max-w-[1700px] flex items-center justify-between">
           {/* Left Side: Menu & Favorites */}
           <div className="flex items-center gap-6">
@@ -118,22 +146,22 @@ export default function Header({ t }: { t: any }) {
               onClick={() => handleScrollTo("home")}
               className="flex items-center"
             >
-              <img
-                src={Logo.src}
-                alt="Logo"
-                className="h-16 w-auto object-contain"
-              />
+              <i className="pi pi-hourglass text-2xl mr-1"></i>
+              <p className="text-2xl font-bold mr-1">Time</p>
+              <p className="text-2xl font-bold text-red-600"> On You</p>
             </Link>
           </div>
 
           {/* Right Side: Actions */}
           <div className="flex items-center gap-6">
-            <div className="hidden lg:flex flex-col items-center gap-1 group cursor-pointer">
-              <i className="pi pi-th-large text-xl group-hover:text-red-600 transition-colors"></i>
-              <span className="text-[10px] font-bold tracking-widest uppercase mt-1">
-                Collections
-              </span>
-            </div>
+            <Link href="/products" onClick={() => handleScrollTo("products")}>
+              <div className="hidden lg:flex flex-col items-center gap-1 group cursor-pointer">
+                <i className="pi pi-th-large text-xl group-hover:text-red-600 transition-colors"></i>
+                <span className="text-[10px] font-bold tracking-widest uppercase mt-1">
+                  Products
+                </span>
+              </div>
+            </Link>
 
             <div className="hidden lg:flex flex-col items-center gap-1 group cursor-pointer">
               <i className="pi pi-map-marker text-xl group-hover:text-red-600 transition-colors"></i>

@@ -6,6 +6,7 @@ import {
   NestedCategory,
   Product,
 } from "@/features/products/types/product.types";
+import Logo from "@/public/images/time-on-you.jpg";
 
 interface MegaMenuProps {
   isOpen: boolean;
@@ -196,7 +197,7 @@ export default function MegaMenu({ isOpen, onClose, t }: MegaMenuProps) {
             {/* 1. Category Image (First Item) */}
             <div className="relative flex-shrink-0 w-[450px] aspect-square bg-gray-50 dark:bg-gray-900 overflow-hidden group rounded-xl shadow-sm">
               <img
-                src={selectedSubCategory?.image || ""} // Fallback to empty if no image
+                src={selectedSubCategory?.image || "default"} // Fallback to empty if no image
                 alt={selectedSubCategory?.label || "Category"}
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
               />
