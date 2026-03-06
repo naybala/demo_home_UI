@@ -122,7 +122,7 @@ export default function MegaMenu({ isOpen, onClose, t }: MegaMenuProps) {
           : "-translate-y-10 opacity-0 pointer-events-none"
       }`}
     >
-      <div className="container mx-auto max-w-[1700px] py-16 px-10 lg:min-h-[500px]">
+      <div className="container mx-auto max-w-[1700px] py-16 px-10 lg:min-h-[800px]">
         {/* Category Navigation (Horizontal Bars) */}
         <div className="flex items-center gap-12 mb-10 overflow-x-auto no-scrollbar">
           {categories.map((cat) => (
