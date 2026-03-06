@@ -1,5 +1,6 @@
 import {
   CategoryResponse,
+  NestedCategoryResponse,
   ProductDetailResponse,
   ProductListResponse,
 } from "../types/product.types";
@@ -36,6 +37,17 @@ export const ProductsAPI = {
   getCategories: async (): Promise<CategoryResponse> => {
     const res = await apiServer<CategoryResponse>(
       "/fetch-all-categories",
+      true,
+      {
+        next: { revalidate: 3600 },
+      },
+    );
+    return res;
+  },
+
+  getNestedCategories: async (): Promise<NestedCategoryResponse> => {
+    const res = await apiServer<NestedCategoryResponse>(
+      "/get-nested-categories",
       true,
       {
         next: { revalidate: 3600 },

@@ -5,9 +5,10 @@ import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import MobileNav from "./MobileNav";
 import ThemeToggle from "../common/ThemeToggle";
 import { LanguageSwitcher } from "../common/LanguageSwitcher";
-import { NavLinks } from "./NavLinks";
+import Link from "next/link";
 import Logo from "@/public/images/logo.png";
 import AuthModal from "@/features/auth/components/AuthModal";
+import MegaMenu from "./MegaMenu";
 
 import { useAuthStore } from "@/stores/auth";
 import { confirmDialog } from "primereact/confirmdialog";
@@ -17,6 +18,7 @@ export default function Header({ t }: { t: any }) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [isOpen, setIsOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAuthOpen, setIsAuthOpen] = useState(false);
 
   const { isAuthenticated, user, logout } = useAuthStore();
@@ -86,64 +88,114 @@ export default function Header({ t }: { t: any }) {
 
   return (
     <>
-      <header className="bg-[#ece7e7] dark:bg-[#0f1114] text-black dark:text-white shadow p-4 fixed top-0 left-0 w-full z-50">
+      <header className="bg-white/80 dark:bg-[#0f1114]/80 backdrop-blur-md text-black dark:text-white shadow-sm px-4 py-3 fixed top-0 left-0 w-full z-50">
         <div className="container mx-auto max-w-[1700px] flex items-center justify-between">
-          <div className="text-xl font-bold">
-            <span
-              onClick={() => {
-                handleScrollTo("home");
-              }}
-              className="flex items-center cursor-pointer"
+          {/* Left Side: Menu & Favorites */}
+          <div className="flex items-center gap-6">
+            <button
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="flex flex-col items-center gap-1 group"
+            >
+              <i
+                className={`pi ${isMenuOpen ? "pi-times" : "pi-bars"} text-xl group-hover:text-red-600 transition-colors`}
+              ></i>
+              <span className="text-[10px] font-bold tracking-widest uppercase mt-1">
+                {isMenuOpen ? "Close" : "Menu"}
+              </span>
+            </button>
+            <button className="hidden sm:flex flex-col items-center gap-1 group">
+              <i className="pi pi-heart text-xl group-hover:text-red-600 transition-colors"></i>
+              <span className="text-[10px] font-bold tracking-widest uppercase mt-1">
+                Favorites
+              </span>
+            </button>
+          </div>
+
+          {/* Center: Logo */}
+          <div className="absolute left-1/2 -translate-x-1/2">
+            <Link
+              href="/"
+              onClick={() => handleScrollTo("home")}
+              className="flex items-center"
             >
               <img
                 src={Logo.src}
-                alt="Tha Dar Aung Logo"
-                className="h-12 w-12 mr-2 rounded-lg shadow-lg object-contain"
+                alt="Logo"
+                className="h-10 w-auto object-contain"
               />
-              {t["app-name"]}
-            </span>
+            </Link>
           </div>
 
-          <div className="hidden lg:flex items-center gap-4">
-            <NavLinks className="px-3 py-1" t={t} />
-            {mounted ? (
-              isAuthenticated() ? (
-                <div className="flex items-center gap-3 bg-white/50 dark:bg-gray-800/50 px-3 py-1.5 rounded-full border border-gray-200 dark:border-gray-700">
+          {/* Right Side: Actions */}
+          <div className="flex items-center gap-6">
+            <div className="hidden lg:flex flex-col items-center gap-1 group cursor-pointer">
+              <i className="pi pi-th-large text-xl group-hover:text-red-600 transition-colors"></i>
+              <span className="text-[10px] font-bold tracking-widest uppercase mt-1">
+                Collections
+              </span>
+            </div>
+
+            <div className="hidden lg:flex flex-col items-center gap-1 group cursor-pointer">
+              <i className="pi pi-map-marker text-xl group-hover:text-red-600 transition-colors"></i>
+              <span className="text-[10px] font-bold tracking-widest uppercase mt-1">
+                Retailers
+              </span>
+            </div>
+
+            <div className="flex flex-col items-center gap-1 group cursor-pointer">
+              <i className="pi pi-search text-xl group-hover:text-red-600 transition-colors"></i>
+              <span className="text-[10px] font-bold tracking-widest uppercase mt-1">
+                Search
+              </span>
+            </div>
+
+            <div className="hidden sm:flex flex-col items-center gap-1">
+              <LanguageSwitcher className="text-[10px] font-bold tracking-widest uppercase !border-none !p-0" />
+              <span className="text-[10px] font-bold tracking-widest uppercase mt-1 opacity-50">
+                Lang
+              </span>
+            </div>
+
+            {mounted &&
+              (isAuthenticated() ? (
+                <div className="flex flex-col items-center gap-1">
                   <img
                     src={getAvatarUrl(user?.avatar)}
                     alt={user?.fullname || "User"}
-                    className="w-7 h-7 rounded-full border border-gray-300 dark:border-gray-600 object-cover"
+                    className="w-5 h-5 rounded-full object-cover border border-gray-300 dark:border-gray-700"
                   />
                   <button
                     onClick={handleLogout}
-                    className="text-xs font-bold text-red-500 hover:text-red-600 transition-colors uppercase tracking-wider"
+                    className="text-[10px] font-bold text-red-500 hover:text-red-600 uppercase tracking-widest"
                   >
-                    Logout
+                    Out
                   </button>
                 </div>
               ) : (
-                <i
+                <button
                   onClick={() => setIsAuthOpen(true)}
-                  className="pi pi-user cursor-pointer hover:text-blue-500 transition-colors"
-                  style={{ fontSize: "1.2rem" }}
-                ></i>
-              )
-            ) : (
-              // SSR / pre-mount placeholder — matches server output, no flicker
-              <div className="w-5 h-5" />
-            )}
-            <LanguageSwitcher className={style} />
-            <ThemeToggle />
-          </div>
+                  className="flex flex-col items-center gap-1 group"
+                >
+                  <i className="pi pi-user text-xl group-hover:text-red-600 transition-colors"></i>
+                  <span className="text-[10px] font-bold tracking-widest uppercase mt-1">
+                    Login
+                  </span>
+                </button>
+              ))}
 
-          <button
-            onClick={toggleSidebar}
-            className="lg:hidden px-2 py-1 border rounded"
-          >
-            ☰
-          </button>
+            <div className="hidden sm:block">
+              <ThemeToggle />
+            </div>
+          </div>
         </div>
       </header>
+
+      <MegaMenu
+        isOpen={isMenuOpen}
+        onClose={() => setIsMenuOpen(false)}
+        t={t}
+      />
+
       <MobileNav isOpen={isOpen} closeSidebar={closeSidebar} t={t} />
       <AuthModal isOpen={isAuthOpen} onClose={() => setIsAuthOpen(false)} />
     </>

@@ -13,10 +13,7 @@ export const NavLinks = ({ className = "", onClick, t }: Props) => {
   const locale = useMemo(() => pathname.split("/")[1] || "en", [pathname]);
 
   /** ---------------- Navigation config ---------------- */
-  const scrollSections = useMemo(
-    () => ["home", "feature", "new-arrival", "more-to-explore", "location"],
-    [],
-  );
+  const scrollSections = useMemo(() => ["home"], []);
 
   const pageLinks = useMemo(() => [{ id: "products", href: "/products" }], []);
 

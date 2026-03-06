@@ -58,6 +58,25 @@ export interface CategoryResponse {
   data: Category[];
 }
 
+export interface NestedCategory {
+  id: number;
+  label: string;
+  children?: {
+    id: number;
+    label: string;
+    image: string;
+  }[];
+}
+
+export interface NestedCategoryResponse {
+  code: number;
+  status: string;
+  message: string;
+  data: {
+    data: NestedCategory[];
+  };
+}
+
 export interface ProductDetailResponse {
   code: number;
   status: string;
