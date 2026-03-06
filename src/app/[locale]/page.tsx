@@ -52,7 +52,7 @@ export default async function Page({
             <ProductCarousel
               products={homeData.normal_data_two}
               locale={locale}
-              title="More to Explore"
+              title="More to Explore , It's Time On You Buddy!"
               id="more-to-explore"
               isBg={true}
             />

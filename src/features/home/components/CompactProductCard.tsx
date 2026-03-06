@@ -50,7 +50,7 @@ export default function CompactProductCard({
           </div>
 
           {/* Primary Product Image Overlapping */}
-          <div className="relative z-10 w-full aspect-[4/5] flex items-end justify-center pb-1 pointer-events-none">
+          <div className="relative z-10 w-full aspect-[4/5] flex items-end justify-center pointer-events-none mt-2">
             <img
               src={product.primary_photo}
               alt={product.name}

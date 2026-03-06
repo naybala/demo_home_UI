@@ -5,6 +5,7 @@ import CompactProductCard from "./CompactProductCard";
 import { useRef } from "react";
 import Link from "next/link";
 import "./productCard.css";
+import localFont from "next/font/local";
 
 interface ProductCarouselProps {
   products: Product[];
@@ -13,6 +14,10 @@ interface ProductCarouselProps {
   id: string;
   isBg?: boolean;
 }
+
+const myFont = localFont({
+  src: "../../../../public/fonts/Matemasie-Regular.ttf",
+});
 
 export default function ProductCarousel({
   products,
@@ -49,9 +54,17 @@ export default function ProductCarousel({
         /* Title Overlay for Background Mode - Lower Z-Index so products cover it */
         <div className="absolute left-0 top-0 w-full h-full pointer-events-none z-0 hidden md:flex items-center px-10 md:px-24">
           <div className="md:max-w-[45%] pointer-events-auto">
-            <h2 className="text-6xl md:text-8xl font-black text-white uppercase leading-none mb-10 tracking-tighter drop-shadow-2xl">
-              {title}
-            </h2>
+            {isBg ? (
+              <h2
+                className={`ms-6 text-2xl md:text-8xl font-black text-red-600  leading-none mb-10 tracking-tighter drop-shadow-2xl ${myFont.className}`}
+              >
+                {title}
+              </h2>
+            ) : (
+              <h2 className="text-6xl md:text-8xl font-black text-white uppercase leading-none mb-10 tracking-tighter drop-shadow-2xl">
+                {title}
+              </h2>
+            )}
             <Link
               href={`/${locale}/products`}
               className="text-white font-black uppercase tracking-[0.2em] text-[13px] flex items-center gap-3 hover:gap-5 transition-all group drop-shadow-lg"
