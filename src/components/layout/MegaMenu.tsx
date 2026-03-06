@@ -42,6 +42,53 @@ export default function MegaMenu({ isOpen, onClose, t }: MegaMenuProps) {
     };
   }, [isOpen]);
 
+  // Fetch categories on mount
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const res = await ProductsAPI.getNestedCategories();
+        if (res.code === 200) {
+          setCategories(res.data.data);
+        }
+      } catch (error) {
+        console.error("Failed to fetch categories:", error);
+      }
+    };
+    fetchCategories();
+  }, []);
+
+  // Auto-select first category and sub-category on first open
+  useEffect(() => {
+    if (isOpen && categories.length > 0 && !selectedCategory) {
+      const firstCat = categories[0];
+      setSelectedCategory(firstCat);
+      if (firstCat.children && firstCat.children.length > 0) {
+        setSelectedSubCategory(firstCat.children[0]);
+      }
+    }
+  }, [isOpen, categories, selectedCategory]);
+
+  // Fetch products when sub-category changes (Limit to 5)
+  const fetchProducts = useCallback(async (subId: number) => {
+    setLoading(true);
+    try {
+      const res = await ProductsAPI.getProducts(1, 5, subId);
+      if (res.code === 200) {
+        setProducts(res.data.data);
+      }
+    } catch (error) {
+      console.error("Failed to fetch products:", error);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (selectedSubCategory) {
+      fetchProducts(selectedSubCategory.id);
+    }
+  }, [selectedSubCategory, fetchProducts]);
+
   // Handle Button Visibility by Checking Scroll Overflow
   const [showNext, setShowNext] = useState(false);
   const checkOverflow = useCallback(() => {
@@ -52,11 +99,13 @@ export default function MegaMenu({ isOpen, onClose, t }: MegaMenuProps) {
   }, []);
 
   useEffect(() => {
-    if (isOpen) {
-      checkOverflow();
-      window.addEventListener("resize", checkOverflow);
-    }
-    return () => window.removeEventListener("resize", checkOverflow);
+    // Small delay to ensure DOM is updated
+    const timer = setTimeout(checkOverflow, 100);
+    window.addEventListener("resize", checkOverflow);
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener("resize", checkOverflow);
+    };
   }, [isOpen, products, checkOverflow]);
 
   const scrollRight = () => {
