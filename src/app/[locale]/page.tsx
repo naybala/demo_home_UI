@@ -35,7 +35,8 @@ export default async function Page({
               locale={locale}
               title="Featured"
             />
-
+          </div>
+          <div className="container mx-auto max-w-[1700px]">
             {/* New Arrivals Section */}
             <ProductCarousel
               products={homeData.normal_data}
@@ -43,15 +44,18 @@ export default async function Page({
               title="New Arrivals"
               id="new-arrival"
             />
-
+          </div>
+          <div className="container max-w-[1920px]">
             {/* More to Explore Section */}
             <ProductCarousel
               products={homeData.normal_data_two}
               locale={locale}
               title="More to Explore"
               id="more-to-explore"
+              isBg={true}
             />
-
+          </div>
+          <div className="container mx-auto max-w-[1700px]">
             {/* Location Section */}
             <LocationSection title={t["location"]} id="location" />
           </div>
