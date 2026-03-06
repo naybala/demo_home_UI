@@ -295,10 +295,10 @@ export default function MegaMenu({ isOpen, onClose, t }: MegaMenuProps) {
             <div
               ref={scrollContainerRef}
               onScroll={checkOverflow}
-              className="flex gap-8 overflow-x-auto no-scrollbar scroll-smooth items-center py-4"
+              className="flex gap-8 overflow-x-auto no-scrollbar scroll-smooth items-start py-4"
             >
               {/* Hero card */}
-              <div className="relative flex-shrink-0 w-[450px] aspect-square bg-gray-50 dark:bg-gray-900 overflow-hidden group rounded-xl shadow-sm">
+              <div className="relative flex-shrink-0 w-[550px] aspect-square bg-gray-50 dark:bg-gray-900 overflow-hidden group rounded-xl shadow-sm">
                 <img
                   src={selectedSubCategory?.image || "default"}
                   alt={selectedSubCategory?.label || "Category"}
