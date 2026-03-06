@@ -197,8 +197,8 @@ export default function MegaMenu({ isOpen, onClose, t }: MegaMenuProps) {
             </div>
           </div>
 
-          {/* 2. Products Line (Scrollable) */}
-          <div className="relative flex-1 flex flex-col justify-center overflow-visible pr-20">
+          {/* 2. Products Line (Scrollable) — relative so Next btn overlays on cards */}
+          <div className="relative flex-1 flex flex-col justify-center min-w-0">
             <div
               ref={scrollContainerRef}
               onScroll={checkOverflow}
@@ -239,14 +239,14 @@ export default function MegaMenu({ isOpen, onClose, t }: MegaMenuProps) {
               )}
             </div>
 
-            {/* Next Button - Ultra Visible & Center-Aligned */}
+            {/* Next Button — absolute overlay on the right of the product cards */}
             {showNext && (
               <button
                 onClick={scrollRight}
-                className="absolute right-8 top-1/2 -translate-y-1/2 w-16 h-16 bg-red-600 text-white rounded-full flex items-center justify-center shadow-[0_0_40px_rgba(220,38,38,0.7)] z-[999] hover:bg-black transition-all active:scale-95 group border-4 border-white dark:border-gray-900 animate-pulse-subtle"
+                className="absolute right-0 top-1/2 -translate-y-1/2 w-14 h-14 bg-white dark:bg-gray-900 rounded-full flex items-center justify-center shadow-xl z-10 hover:bg-red-600 hover:text-white transition-all active:scale-95 group border border-gray-100 dark:border-gray-800"
                 aria-label="Next Products"
               >
-                <i className="pi pi-chevron-right text-3xl font-black group-hover:translate-x-2 transition-transform"></i>
+                <i className="pi pi-chevron-right text-2xl text-gray-700 dark:text-gray-200 group-hover:text-white group-hover:translate-x-0.5 transition-all"></i>
               </button>
             )}
           </div>
