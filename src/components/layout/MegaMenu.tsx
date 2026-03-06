@@ -6,7 +6,6 @@ import {
   NestedCategory,
   Product,
 } from "@/features/products/types/product.types";
-import Logo from "@/public/images/time-on-you.jpg";
 
 interface MegaMenuProps {
   isOpen: boolean;
@@ -97,7 +96,9 @@ export default function MegaMenu({ isOpen, onClose, t }: MegaMenuProps) {
     } catch (error) {
       console.error("Failed to fetch products:", error);
     } finally {
-      setLoading(false);
+      setTimeout(() => {
+        setLoading(false);
+      }, 1000);
     }
   }, []);
 
@@ -134,9 +135,13 @@ export default function MegaMenu({ isOpen, onClose, t }: MegaMenuProps) {
   }, [isOpen, products, checkOverflow]);
 
   const scrollRight = () => {
-    console.log("scrollRight");
     if (scrollContainerRef.current) {
       scrollContainerRef.current.scrollBy({ left: 450, behavior: "smooth" });
+    }
+  };
+  const scrollLeft = () => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollBy({ left: -450, behavior: "smooth" });
     }
   };
 
@@ -148,7 +153,7 @@ export default function MegaMenu({ isOpen, onClose, t }: MegaMenuProps) {
           : "-translate-y-10 opacity-0 pointer-events-none"
       }`}
     >
-      <div className="container mx-auto max-w-[1700px] py-16 px-10 lg:min-h-[800px]">
+      <div className="container mx-auto max-w-[1920px] py-16 px-10 lg:min-h-[800px]">
         {/* Category Navigation (Horizontal Bars) */}
         <div className="flex items-center gap-12 mb-10 overflow-x-auto no-scrollbar">
           {categories.map((cat) => (
@@ -166,13 +171,7 @@ export default function MegaMenu({ isOpen, onClose, t }: MegaMenuProps) {
           ))}
         </div>
         {/* Animated Content: Sub-Category Pills + Selection Area */}
-        <div
-          className={`transition-all duration-200 ease-in-out ${
-            isTransitioning
-              ? "opacity-0 translate-y-2 pointer-events-none"
-              : "opacity-100 translate-y-0"
-          }`}
-        >
+        <div className={`transition-all  opacity-100 translate-y-0`}>
           {/* Sub-Category Pills */}
           {selectedCategory?.children && (
             <div className="flex flex-wrap items-center gap-4 mb-12">
@@ -195,21 +194,6 @@ export default function MegaMenu({ isOpen, onClose, t }: MegaMenuProps) {
           {/* Selection Area: Image + Product Line */}
           <div className="relative flex items-stretch gap-12 overflow-visible">
             {/* 1. Category Image (First Item) */}
-            <div className="relative flex-shrink-0 w-[450px] aspect-square bg-gray-50 dark:bg-gray-900 overflow-hidden group rounded-xl shadow-sm">
-              <img
-                src={selectedSubCategory?.image || "default"} // Fallback to empty if no image
-                alt={selectedSubCategory?.label || "Category"}
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent group-hover:from-black/70 transition-colors flex flex-col justify-end p-10">
-                <h4 className="text-white text-4xl font-black uppercase tracking-tighter leading-none mb-3">
-                  {selectedSubCategory?.label}
-                </h4>
-                <p className="text-white/90 text-[11px] uppercase font-bold tracking-[0.4em]">
-                  Discover the Collection
-                </p>
-              </div>
-            </div>
 
             {/* 2. Products Line (Scrollable) — relative so Next btn overlays on cards */}
             <div className="relative flex-1 flex flex-col justify-center min-w-0">
@@ -218,11 +202,26 @@ export default function MegaMenu({ isOpen, onClose, t }: MegaMenuProps) {
                 onScroll={checkOverflow}
                 className="flex gap-8 overflow-x-auto no-scrollbar scroll-smooth items-center py-4"
               >
+                <div className="relative flex-shrink-0 w-[450px] aspect-square bg-gray-50 dark:bg-gray-900 overflow-hidden group rounded-xl shadow-sm">
+                  <img
+                    src={selectedSubCategory?.image || "default"} // Fallback to empty if no image
+                    alt={selectedSubCategory?.label || "Category"}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent group-hover:from-black/70 transition-colors flex flex-col justify-end p-10">
+                    <h4 className="text-white text-4xl font-black uppercase tracking-tighter leading-none mb-3">
+                      {selectedSubCategory?.label}
+                    </h4>
+                    <p className="text-white/90 text-[11px] uppercase font-bold tracking-[0.4em]">
+                      Discover the Collection
+                    </p>
+                  </div>
+                </div>
                 {loading ? (
                   Array.from({ length: 3 }).map((_, i) => (
                     <div
                       key={i}
-                      className="flex-shrink-0 w-72 h-[450px] bg-gray-50 dark:bg-gray-900 animate-pulse rounded-xl"
+                      className="flex-shrink-0 w-72 h-[350px] bg-gray-500 dark:bg-gray-900 animate-pulse rounded-xl"
                     ></div>
                   ))
                 ) : products.length > 0 ? (
@@ -231,7 +230,7 @@ export default function MegaMenu({ isOpen, onClose, t }: MegaMenuProps) {
                       key={product.id}
                       className="flex-shrink-0 w-72 group cursor-pointer"
                     >
-                      <div className="aspect-[4/5] bg-gray-50 dark:bg-gray-900 flex items-center justify-center p-8 mb-4 group-hover:bg-gray-100 dark:group-hover:bg-gray-800/50 transition-all rounded-xl border border-transparent group-hover:border-gray-100 dark:group-hover:border-gray-800">
+                      <div className="aspect-[4/5] bg-gray-50 dark:bg-gray-900 flex items-center justify-center p-5 mb-4 group-hover:bg-gray-100 dark:group-hover:bg-gray-800/50 transition-all rounded-xl border border-transparent group-hover:border-gray-100 dark:group-hover:border-gray-800">
                         <img
                           src={product.primary_photo}
                           alt={product.name}
@@ -241,9 +240,6 @@ export default function MegaMenu({ isOpen, onClose, t }: MegaMenuProps) {
                       <h5 className="text-center font-black uppercase tracking-[0.2em] text-[13px] group-hover:text-red-600 transition-colors px-4 truncate">
                         {product.name}
                       </h5>
-                      <p className="text-center text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                        {product.price}
-                      </p>
                     </div>
                   ))
                 ) : (
@@ -254,15 +250,20 @@ export default function MegaMenu({ isOpen, onClose, t }: MegaMenuProps) {
               </div>
 
               {/* Next Button — absolute overlay on the right of the product cards */}
-              {showNext && (
-                <button
-                  onClick={scrollRight}
-                  className="absolute right-0 top-1/2 -translate-y-1/2 w-14 h-14 bg-white dark:bg-gray-900 rounded-full flex items-center justify-center shadow-xl z-10 hover:bg-red-600 hover:text-white transition-all active:scale-95 group border border-gray-100 dark:border-gray-800"
-                  aria-label="Next Products"
-                >
-                  <i className="pi pi-chevron-right text-2xl text-gray-700 dark:text-gray-200 group-hover:text-white group-hover:translate-x-0.5 transition-all"></i>
-                </button>
-              )}
+              <button
+                onClick={scrollLeft}
+                className="absolute left-0 top-1/2 -translate-y-1/2 w-14 h-14 bg-white dark:bg-gray-900 rounded-full flex items-center justify-center shadow-xl z-10 hover:bg-red-600 hover:text-white transition-all active:scale-95 group border border-gray-100 dark:border-gray-800"
+                aria-label="Next Products"
+              >
+                <i className="pi pi-chevron-left text-2xl text-gray-700 dark:text-gray-200 group-hover:text-white group-hover:translate-x-0.5 transition-all"></i>
+              </button>
+              <button
+                onClick={scrollRight}
+                className="absolute right-0 top-1/2 -translate-y-1/2 w-14 h-14 bg-white dark:bg-gray-900 rounded-full flex items-center justify-center shadow-xl z-10 hover:bg-red-600 hover:text-white transition-all active:scale-95 group border border-gray-100 dark:border-gray-800"
+                aria-label="Next Products"
+              >
+                <i className="pi pi-chevron-right text-2xl text-gray-700 dark:text-gray-200 group-hover:text-white group-hover:translate-x-0.5 transition-all"></i>
+              </button>
             </div>
           </div>
         </div>{" "}

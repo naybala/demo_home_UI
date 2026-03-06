@@ -146,9 +146,12 @@ export default function Header({ t }: { t: any }) {
               onClick={() => handleScrollTo("home")}
               className="flex items-center"
             >
-              <i className="pi pi-hourglass text-2xl mr-1"></i>
-              <p className="text-2xl font-bold mr-1">Time</p>
-              <p className="text-2xl font-bold text-red-600"> On You</p>
+              <i
+                className="pi pi-hourglass  mr-2 text-red-600"
+                style={{ fontSize: "1.8rem" }}
+              ></i>
+              <p className="text-2xl font-bold">Time</p>
+              <p className="text-2xl font-bold text-red-600">On You</p>
             </Link>
           </div>
 
@@ -170,19 +173,12 @@ export default function Header({ t }: { t: any }) {
               </span>
             </div>
 
-            <div className="flex flex-col items-center gap-1 group cursor-pointer">
-              <i className="pi pi-search text-xl group-hover:text-red-600 transition-colors"></i>
-              <span className="text-[10px] font-bold tracking-widest uppercase mt-1">
-                Search
-              </span>
-            </div>
-
-            <div className="hidden sm:flex flex-col items-center gap-1">
+            {/* <div className="hidden sm:flex flex-col items-center gap-1">
               <LanguageSwitcher className="text-[10px] font-bold tracking-widest uppercase !border-none !p-0" />
-              <span className="text-[10px] font-bold tracking-widest uppercase mt-1 opacity-50">
+              <span className="text-[10px] font-bold tracking-widest uppercase mt-1">
                 Lang
               </span>
-            </div>
+            </div> */}
 
             {mounted &&
               (isAuthenticated() ? (
