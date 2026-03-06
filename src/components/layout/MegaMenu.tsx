@@ -30,15 +30,19 @@ export default function MegaMenu({ isOpen, onClose, t }: MegaMenuProps) {
   // Body Scroll Lock
   useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow = "hidden";
-      document.documentElement.style.overflow = "hidden"; // Target both for better lock
+      document.body.style.setProperty("overflow", "hidden", "important");
+      document.documentElement.style.setProperty(
+        "overflow",
+        "hidden",
+        "important",
+      );
     } else {
-      document.body.style.overflow = "unset";
-      document.documentElement.style.overflow = "unset";
+      document.body.style.setProperty("overflow", "unset", "");
+      document.documentElement.style.setProperty("overflow", "unset", "");
     }
     return () => {
-      document.body.style.overflow = "unset";
-      document.documentElement.style.overflow = "unset";
+      document.body.style.setProperty("overflow", "unset", "");
+      document.documentElement.style.setProperty("overflow", "unset", "");
     };
   }, [isOpen]);
 
@@ -68,11 +72,11 @@ export default function MegaMenu({ isOpen, onClose, t }: MegaMenuProps) {
     }
   }, [isOpen, categories, selectedCategory]);
 
-  // Fetch products when sub-category changes (Limit to 5)
+  // Fetch products when sub-category changes (Limit to 10 for better coverage)
   const fetchProducts = useCallback(async (subId: number) => {
     setLoading(true);
     try {
-      const res = await ProductsAPI.getProducts(1, 5, subId);
+      const res = await ProductsAPI.getProducts(1, 10, subId);
       if (res.code === 200) {
         setProducts(res.data.data);
       }
@@ -89,19 +93,26 @@ export default function MegaMenu({ isOpen, onClose, t }: MegaMenuProps) {
     }
   }, [selectedSubCategory, fetchProducts]);
 
-  // Handle Button Visibility by Checking Scroll Overflow
+  // Handle Button Visibility - Guaranteed for > 1 products
   const [showNext, setShowNext] = useState(false);
   const checkOverflow = useCallback(() => {
-    if (scrollContainerRef.current) {
-      const { scrollWidth, clientWidth } = scrollContainerRef.current;
-      setShowNext(scrollWidth > clientWidth);
-    }
+    const el = scrollContainerRef.current;
+
+    if (!el) return;
+
+    const hasOverflow = el.scrollWidth > el.clientWidth;
+    const isAtEnd = el.scrollLeft + el.clientWidth >= el.scrollWidth - 5;
+
+    setShowNext(hasOverflow && !isAtEnd);
   }, []);
 
   useEffect(() => {
-    // Small delay to ensure DOM is updated
-    const timer = setTimeout(checkOverflow, 100);
+    if (!isOpen) return;
+
+    const timer = setTimeout(checkOverflow, 200);
+
     window.addEventListener("resize", checkOverflow);
+
     return () => {
       clearTimeout(timer);
       window.removeEventListener("resize", checkOverflow);
@@ -109,8 +120,9 @@ export default function MegaMenu({ isOpen, onClose, t }: MegaMenuProps) {
   }, [isOpen, products, checkOverflow]);
 
   const scrollRight = () => {
+    console.log("scrollRight");
     if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollBy({ left: 300, behavior: "smooth" });
+      scrollContainerRef.current.scrollBy({ left: 450, behavior: "smooth" });
     }
   };
 
@@ -186,7 +198,7 @@ export default function MegaMenu({ isOpen, onClose, t }: MegaMenuProps) {
           </div>
 
           {/* 2. Products Line (Scrollable) */}
-          <div className="relative flex-1 flex flex-col justify-center overflow-visible">
+          <div className="relative flex-1 flex flex-col justify-center overflow-visible pr-20">
             <div
               ref={scrollContainerRef}
               onScroll={checkOverflow}
@@ -227,13 +239,14 @@ export default function MegaMenu({ isOpen, onClose, t }: MegaMenuProps) {
               )}
             </div>
 
-            {/* Next Button - More Visible & Properly Positioned */}
+            {/* Next Button - Ultra Visible & Center-Aligned */}
             {showNext && (
               <button
                 onClick={scrollRight}
-                className="absolute -right-10 top-1/2 -translate-y-1/2 w-14 h-14 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-full flex items-center justify-center shadow-2xl hover:border-red-600 hover:text-red-600 transition-all z-20 group"
+                className="absolute right-8 top-1/2 -translate-y-1/2 w-16 h-16 bg-red-600 text-white rounded-full flex items-center justify-center shadow-[0_0_40px_rgba(220,38,38,0.7)] z-[999] hover:bg-black transition-all active:scale-95 group border-4 border-white dark:border-gray-900 animate-pulse-subtle"
+                aria-label="Next Products"
               >
-                <i className="pi pi-chevron-right text-lg group-hover:translate-x-1 transition-transform"></i>
+                <i className="pi pi-chevron-right text-3xl font-black group-hover:translate-x-2 transition-transform"></i>
               </button>
             )}
           </div>
