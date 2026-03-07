@@ -98,7 +98,7 @@ export default function MegaMenu({ isOpen, onClose, t }: MegaMenuProps) {
     } finally {
       setTimeout(() => {
         setLoading(false);
-      }, 800);
+      }, 300);
     }
   }, []);
 
