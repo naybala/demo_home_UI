@@ -4,7 +4,6 @@ import { useState, useEffect, useRef } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import MobileNav from "./MobileNav";
 import ThemeToggle from "../common/ThemeToggle";
-import { LanguageSwitcher } from "../common/LanguageSwitcher";
 import Link from "next/link";
 import AuthModal from "@/features/auth/components/AuthModal";
 import MegaMenu from "./MegaMenu";
@@ -165,13 +164,16 @@ export default function Header({ t }: { t: any }) {
                 </span>
               </div>
             </Link>
-
-            <div className="hidden lg:flex flex-col items-center gap-1 group cursor-pointer">
-              <i className="pi pi-map-marker text-xl group-hover:text-red-600 transition-colors"></i>
-              <span className="text-[10px] font-bold tracking-widest uppercase mt-1">
-                Retailers
-              </span>
-            </div>
+            {/* <div className="flex items-center gap-6">
+              <Link href="/workshop" onClick={() => handleScrollTo("workshop")}>
+                <div className="hidden lg:flex flex-col items-center gap-1 group cursor-pointer">
+                  <i className="pi pi-map-marker text-xl group-hover:text-red-600 transition-colors"></i>
+                  <span className="text-[10px] font-bold tracking-widest uppercase mt-1">
+                    Retailers
+                  </span>
+                </div>
+              </Link>
+            </div> */}
 
             {/* <div className="hidden sm:flex flex-col items-center gap-1">
               <LanguageSwitcher className="text-[10px] font-bold tracking-widest uppercase !border-none !p-0" />

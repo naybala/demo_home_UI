@@ -13,19 +13,20 @@ export const LanguageSwitcher = ({ className }: LanguageSwitcherProps) => {
     const targetLocale = getTargetLocale();
     const newSegments = [...segments];
     newSegments[1] = targetLocale;
+    return newSegments.join("/");
+  };
 
-    // Set cookie for middleware persistence
+  const handleSwitch = () => {
+    const targetLocale = getTargetLocale();
     if (typeof document !== "undefined") {
       document.cookie = `NEXT_LOCALE=${targetLocale}; path=/; max-age=31536000`; // 1 year
     }
-
-    return newSegments.join("/");
   };
 
   return (
     <>
       {locale === "mm" ? (
-        <Link href={getTargetHref()}>
+        <Link href={getTargetHref()} onClick={handleSwitch}>
           <button className={className}>
             <img
               className="w-7 rounded-sm shadow-lg"
@@ -35,7 +36,7 @@ export const LanguageSwitcher = ({ className }: LanguageSwitcherProps) => {
           </button>
         </Link>
       ) : (
-        <Link href={getTargetHref()}>
+        <Link href={getTargetHref()} onClick={handleSwitch}>
           <button className={className}>
             <img
               className="w-7 rounded-sm shadow-lg"
