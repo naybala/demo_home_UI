@@ -12,10 +12,14 @@ export const ProductsAPI = {
     perPage = 12,
     categoryId?: string | number,
     search?: string,
+    minPrice?: number,
+    maxPrice?: number,
   ): Promise<ProductListResponse> => {
     let url = `/products?page=${page}&per_page=${perPage}`;
     if (categoryId) url += `&category_id=${categoryId}`;
     if (search) url += `&search=${search}`;
+    if (minPrice !== undefined) url += `&min_price=${minPrice}`;
+    if (maxPrice !== undefined) url += `&max_price=${maxPrice}`;
 
     const res = await apiServer<ProductListResponse>(url, true, {
       // next: { revalidate: 60 },

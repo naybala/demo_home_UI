@@ -8,8 +8,7 @@ import ContentLoader from "@/components/common/ContentLoader";
 import Link from "next/link";
 import { ProductListResponse } from "../types/product.types";
 import { useEffect, useRef, useState } from "react";
-import SearchBar from "@/components/common/SearchBar";
-import SingleSelect from "@/components/common/SingleSelect";
+import FilterSidebar from "./FilterSidebar";
 import { useAuthStore } from "@/stores/auth";
 
 interface ProductsClientProps {
@@ -27,13 +26,11 @@ export default function ProductsClient({
   const observerRef = useRef<HTMLDivElement>(null);
   const { isAuthenticated } = useAuthStore();
 
-  // Filter states
-  const [search, setSearch] = useState("");
-  const [categoryId, setCategoryId] = useState<string | number>("");
-
-  // Committed states (only change on search button click)
-  const [activeSearch, setActiveSearch] = useState("");
+  // Search/Filter states
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [activeCategoryId, setActiveCategoryId] = useState<string | number>("");
+  const [activeMinPrice, setActiveMinPrice] = useState<number | undefined>();
+  const [activeMaxPrice, setActiveMaxPrice] = useState<number | undefined>();
 
   const {
     data,
@@ -45,7 +42,8 @@ export default function ProductsClient({
     isFetchingNextPage,
   } = useInfiniteProducts(initialData, {
     categoryId: activeCategoryId,
-    search: activeSearch,
+    minPrice: activeMinPrice,
+    maxPrice: activeMaxPrice,
   });
 
   const { data: categoriesData, isLoading: isLoadingCategories } =
@@ -82,17 +80,7 @@ export default function ProductsClient({
   // Flatten all products from all pages
   const allProducts = data?.pages.flatMap((page) => page.data.data) || [];
 
-  const handleSearch = () => {
-    setActiveSearch(search);
-    setActiveCategoryId(categoryId);
-  };
-
-  const handleClear = () => {
-    setSearch("");
-    setCategoryId("");
-    setActiveSearch("");
-    setActiveCategoryId("");
-  };
+  // handle functions removed
 
   if (mounted && isError && allProducts.length === 0) {
     return (
@@ -111,30 +99,62 @@ export default function ProductsClient({
 
   return (
     <main className="pt-32 min-h-screen px-4 pb-20 bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
-      <div className="max-w-7xl mx-auto">
-        <header className="mb-8">
-          <SearchBar
-            searchValue={search}
-            onSearchChange={setSearch}
-            onSearch={handleSearch}
-            onClear={handleClear}
-            showClearButton={!!search || !!categoryId}
-            isLoading={isLoading}
-            placeholder={t.search_placeholder || "Search products..."}
+      <div className="mx-auto">
+        <header className="mb-8 border-b border-gray-200 dark:border-gray-800 pb-4 flex items-center justify-between">
+          <div className="flex items-center gap-2 cursor-pointer text-sm font-semibold tracking-wider text-gray-900 dark:text-gray-100 uppercase">
+            SORT BY
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 4v16m8-8H4"
+              />
+            </svg>
+          </div>
+          <div
+            className="flex items-center gap-2 cursor-pointer text-sm font-semibold tracking-wider text-gray-900 dark:text-gray-100 uppercase"
+            onClick={() => setIsSidebarOpen(true)}
           >
-            <SingleSelect
-              data={categoriesData?.data || []}
-              selectedValue={categoryId}
-              onValueChange={setCategoryId}
-              valueKey="id"
-              labelKey={locale === "mm" ? "name" : "name_other"}
-              placeholder={t.category_placeholder || "Category"}
-              emptyText={t.all_categories || "All Categories"}
-              isLoading={isLoadingCategories}
-              className="w-full md:w-64"
-            />
-          </SearchBar>
+            FILTERS
+            <svg
+              className="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M4 6h16M4 12h16M4 18h16"
+              />
+            </svg>
+          </div>
         </header>
+
+        <FilterSidebar
+          isOpen={isSidebarOpen}
+          onClose={() => setIsSidebarOpen(false)}
+          categories={categoriesData?.data || []}
+          initialFilters={{
+            categoryId: activeCategoryId,
+            minPrice: activeMinPrice,
+            maxPrice: activeMaxPrice,
+          }}
+          onApply={(filters) => {
+            setActiveCategoryId(filters.categoryId ?? "");
+            setActiveMinPrice(filters.minPrice);
+            setActiveMaxPrice(filters.maxPrice);
+          }}
+          locale={locale}
+          t={t}
+        />
 
         {mounted && isLoading && allProducts.length === 0 ? (
           <ContentLoader message="Loading products..." />

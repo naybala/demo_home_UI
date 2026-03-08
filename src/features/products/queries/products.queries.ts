@@ -8,8 +8,12 @@ import {
 export const PRODUCT_KEYS = {
   all: ["products"] as const,
   list: () => [...PRODUCT_KEYS.all, "list"] as const,
-  infiniteList: (filters: { categoryId?: string | number; search?: string }) =>
-    [...PRODUCT_KEYS.list(), "infinite", filters] as const,
+  infiniteList: (filters: {
+    categoryId?: string | number;
+    search?: string;
+    minPrice?: number;
+    maxPrice?: number;
+  }) => [...PRODUCT_KEYS.list(), "infinite", filters] as const,
   details: () => [...PRODUCT_KEYS.all, "detail"] as const,
   detail: (id: string | number) => [...PRODUCT_KEYS.details(), id] as const,
   categories: () => [...PRODUCT_KEYS.all, "categories"] as const,
@@ -25,12 +29,24 @@ export const useProducts = (initialData?: ProductListResponse) => {
 
 export const useInfiniteProducts = (
   initialData?: ProductListResponse,
-  filters: { categoryId?: string | number; search?: string } = {},
+  filters: {
+    categoryId?: string | number;
+    search?: string;
+    minPrice?: number;
+    maxPrice?: number;
+  } = {},
 ) => {
   return useInfiniteQuery({
     queryKey: PRODUCT_KEYS.infiniteList(filters),
     queryFn: ({ pageParam = 1 }) =>
-      ProductsAPI.getProducts(pageParam, 8, filters.categoryId, filters.search),
+      ProductsAPI.getProducts(
+        pageParam,
+        8,
+        filters.categoryId,
+        filters.search,
+        filters.minPrice,
+        filters.maxPrice,
+      ),
     initialPageParam: 1,
     getNextPageParam: (lastPage) => {
       const meta = lastPage.data.meta;
