@@ -10,6 +10,7 @@ import { ProductListResponse } from "../types/product.types";
 import { useEffect, useRef, useState } from "react";
 import FilterSidebar from "./FilterSidebar";
 import { useAuthStore } from "@/stores/auth";
+import ProductCard from "./ProductCard";
 
 interface ProductsClientProps {
   locale: string;
@@ -160,43 +161,15 @@ export default function ProductsClient({
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-              {allProducts.map((product) => {
-                const isMM = locale === "mm";
-                const name = isMM ? product.name : product.name_other;
-
-                return (
-                  <Link
-                    key={product.id}
-                    href={`/${locale}/products/${product.id}`}
-                    prefetch={true}
-                    className="group bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100 dark:border-gray-700 block"
-                  >
-                    <div className="relative aspect-square overflow-hidden bg-gray-100 p-8">
-                      <img
-                        src={product.primary_photo}
-                        alt={name}
-                        className="absolute inset-0 w-full h-full object-fill transition-transform duration-500 group-hover:scale-110"
-                      />
-                      <div className="absolute top-4 right-4 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md px-3 py-1 rounded-full text-sm font-semibold text-blue-600 dark:text-blue-400">
-                        {product.category_names[0]}
-                      </div>
-                    </div>
-
-                    <div className="p-6">
-                      <h2 className="text-lg font-bold mb-2 text-gray-800 dark:text-white line-clamp-2 min-h-[3.5rem]">
-                        {name}
-                      </h2>
-                      {mounted && isAuthenticated() && (
-                        <div className="flex items-center justify-between mt-4">
-                          <span className="text-2xl font-black text-indigo-600 dark:text-indigo-400">
-                            {product.price} Ks
-                          </span>
-                        </div>
-                      )}
-                    </div>
-                  </Link>
-                );
-              })}
+              {allProducts.map((product) => (
+                <ProductCard
+                  key={product.id}
+                  product={product}
+                  locale={locale}
+                  isAuthenticated={isAuthenticated()}
+                  mounted={mounted}
+                />
+              ))}
             </div>
           )}
 

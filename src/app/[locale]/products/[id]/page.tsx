@@ -2,7 +2,8 @@ import { getDictionary } from "@/lib/get-dictionary";
 import { ProductsAPI } from "@/features/products/api/products.api";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ProductDetailCard } from "@/features/products/components/productDetailCard";
+import { ProductDetailCard } from "@/features/products/components/ProductDetailCard";
+import { RelatedProducts } from "@/features/products/components/RelatedProducts";
 import { Metadata } from "next";
 
 export async function generateMetadata({
@@ -13,7 +14,7 @@ export async function generateMetadata({
   const { id, locale } = await params;
   try {
     const response = await ProductsAPI.getProduct(id);
-    const product = response.data;
+    const { product } = response.data;
 
     const title = locale === "mm" ? product.name_other : product.name;
     // Description might contain HTML from a rich text editor, strip it for meta description
@@ -64,7 +65,7 @@ export default async function ProductDetailPage({
     notFound();
   }
 
-  const product = response.data;
+  const { product, related_product } = response.data;
 
   return (
     <main className="pt-32 min-h-screen px-4 pb-20 bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
@@ -78,6 +79,10 @@ export default async function ProductDetailPage({
         </Link>
 
         <ProductDetailCard product={product} locale={locale} />
+
+        {related_product && related_product.length > 0 && (
+          <RelatedProducts products={related_product} locale={locale} />
+        )}
       </div>
     </main>
   );

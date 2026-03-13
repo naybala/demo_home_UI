@@ -100,7 +100,10 @@ export interface ProductDetailResponse {
   code: number;
   status: string;
   message: string;
-  data: Product;
+  data: {
+    product: Product;
+    related_product: Product[];
+  };
 }
 
 export type ProductList = Product[];
