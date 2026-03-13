@@ -209,9 +209,9 @@ export default function Header({ t }: { t: any }) {
                 </button>
               ))}
 
-            <div className="hidden sm:block">
+            {/* <div className="hidden sm:block">
               <ThemeToggle />
-            </div>
+            </div> */}
           </div>
         </div>
       </header>
