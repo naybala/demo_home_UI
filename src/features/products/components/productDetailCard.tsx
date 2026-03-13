@@ -2,6 +2,8 @@
 import { Product } from "@/features/products/types/product.types";
 import { useState } from "react";
 import { useAuthStore } from "@/stores/auth";
+import { Carousel } from "primereact/carousel";
+import { Image } from "primereact/image";
 
 export const ProductDetailCard = ({
   product,
@@ -10,24 +12,13 @@ export const ProductDetailCard = ({
   product: Product;
   locale: string;
 }) => {
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [showFullSpecs, setShowFullSpecs] = useState(false);
+  const [showFullSpecs, setShowFullSpecs] = useState(true);
   const { isAuthenticated } = useAuthStore();
 
   const isMM = locale === "mm";
   const name = isMM ? product.name_other : product.name;
 
   const allPhotos = product.photos || [];
-
-  const nextImage = () => {
-    setCurrentImageIndex((prev) => (prev + 1) % allPhotos.length);
-  };
-
-  const prevImage = () => {
-    setCurrentImageIndex(
-      (prev) => (prev - 1 + allPhotos.length) % allPhotos.length,
-    );
-  };
 
   // Technical Specs List for the left panel
   const highlights = [
@@ -57,8 +48,8 @@ export const ProductDetailCard = ({
   ].filter((spec) => spec.value);
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900 pt-20">
-      <div className="max-w-[1600px] mx-auto px-6 lg:px-12 py-12">
+    <div className="min-h-screen pt-10">
+      <div className="max-w-[1600px] mx-auto px-3 lg:px-6 py-6">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
           {/* Left Info Panel */}
           <div className="lg:col-span-4 flex flex-col items-center lg:items-end text-center lg:text-right space-y-8 order-2 lg:order-1">
@@ -175,36 +166,35 @@ export const ProductDetailCard = ({
 
           {/* Right Product Carousel */}
           <div className="lg:col-span-8 relative group order-1 lg:order-2">
-            <div className="flex items-center justify-center gap-4 lg:gap-8">
-              {/* Previous Image (Partial) */}
-              <div className="hidden md:block w-1/4 aspect-square opacity-30 grayscale overflow-hidden">
-                <img
-                  src={
-                    allPhotos[
-                      (currentImageIndex - 1 + allPhotos.length) %
-                        allPhotos.length
-                    ]
-                  }
-                  className="w-full h-full object-contain"
-                  alt="Previous"
-                />
-              </div>
-
-              {/* Active Image Container */}
-              <div className="relative w-full md:w-1/2 aspect-square flex items-center justify-center">
-                <img
-                  src={allPhotos[currentImageIndex]}
-                  className="max-w-full max-h-full object-contain p-4 transition-transform duration-500 hover:scale-105"
-                  alt={name}
-                />
-
-                {/* Navigation Arrows */}
-                <button
-                  onClick={prevImage}
-                  className="absolute left-0 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full border border-gray-200 bg-white flex items-center justify-center text-red-600 hover:bg-black hover:text-white transition-all z-10"
-                >
+            <div className="product-carousel">
+              <Carousel
+                value={allPhotos}
+                numVisible={2}
+                numScroll={1}
+                responsiveOptions={[
+                  {
+                    breakpoint: "1024px",
+                    numVisible: 2,
+                    numScroll: 1,
+                  },
+                  {
+                    breakpoint: "768px",
+                    numVisible: 1,
+                    numScroll: 1,
+                  },
+                ]}
+                circular
+                itemTemplate={(photo) => (
+                  <Image
+                    src={photo}
+                    alt={name}
+                    preview
+                    className="w-full h-full object-cover transition-transform duration-700 hover:scale-110"
+                  />
+                )}
+                prevIcon={
                   <svg
-                    className="w-6 h-6"
+                    className="w-6 h-6 text-red-600"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -212,17 +202,14 @@ export const ProductDetailCard = ({
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
-                      strokeWidth={1.5}
+                      strokeWidth={2}
                       d="M15 19l-7-7 7-7"
                     />
                   </svg>
-                </button>
-                <button
-                  onClick={nextImage}
-                  className="absolute right-0 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full border border-gray-200 bg-white flex items-center justify-center text-red-600 hover:bg-black hover:text-white transition-all z-10"
-                >
+                }
+                nextIcon={
                   <svg
-                    className="w-6 h-6"
+                    className="w-6 h-6 text-red-600"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -230,36 +217,12 @@ export const ProductDetailCard = ({
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
-                      strokeWidth={1.5}
+                      strokeWidth={2}
                       d="M9 5l7 7-7 7"
                     />
                   </svg>
-                </button>
-              </div>
-
-              {/* Next Image (Partial) */}
-              <div className="hidden md:block w-1/4 aspect-square opacity-30 grayscale overflow-hidden">
-                <img
-                  src={allPhotos[(currentImageIndex + 1) % allPhotos.length]}
-                  className="w-full h-full object-contain"
-                  alt="Next"
-                />
-              </div>
-            </div>
-
-            {/* Pagination Indicators */}
-            <div className="flex justify-center gap-3 mt-12">
-              {allPhotos.map((_, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => setCurrentImageIndex(idx)}
-                  className={`h-[3px] transition-all duration-300 ${
-                    currentImageIndex === idx
-                      ? "w-8 bg-red-600"
-                      : "w-4 bg-gray-200 dark:bg-gray-700"
-                  }`}
-                />
-              ))}
+                }
+              />
             </div>
           </div>
         </div>

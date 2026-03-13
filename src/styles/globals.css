@@ -4,11 +4,15 @@
 
 /* Hide scrollbar while keeping scroll functionality */
 .no-scrollbar {
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE/Edge */
+  scrollbar-width: none;
+  /* Firefox */
+  -ms-overflow-style: none;
+  /* IE/Edge */
 }
+
 .no-scrollbar::-webkit-scrollbar {
-  display: none; /* Chrome, Safari */
+  display: none;
+  /* Chrome, Safari */
 }
 
 
@@ -135,7 +139,8 @@ body::-webkit-scrollbar {
   height: 14px;
   top: 50%;
   margin-top: -7px;
-  border-radius: 0; /* Square thumbs */
+  border-radius: 0;
+  /* Square thumbs */
   transition: transform 0.2s;
   cursor: pointer;
 }
@@ -158,4 +163,8 @@ body::-webkit-scrollbar {
 
 .dark .price-slider .p-slider-range {
   background: #fff;
+}
+
+.p-image-toolbar {
+  color: white;
 }
