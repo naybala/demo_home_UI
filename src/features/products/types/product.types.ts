@@ -14,6 +14,23 @@ export interface Product {
   is_mini_banner: boolean;
   video?: string;
   cover_photo?: string;
+  dial_size?: string;
+  gender?: string;
+  model_no?: string;
+  brand?: string;
+  dial_color?: string;
+  strap_size?: string;
+  strap_color?: string;
+  strap_material?: string;
+  strap_style?: string;
+  movement?: string;
+  quick_release?: string;
+  clasp_type?: string;
+  origin?: string;
+  case_shape?: string;
+  warranty?: string;
+  water_resistance?: string;
+  crystal?: string;
 }
 
 export interface PaginatedData<T> {
