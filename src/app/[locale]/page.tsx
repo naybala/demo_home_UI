@@ -5,6 +5,7 @@ import FeaturedGrid from "@/features/home/components/FeaturedGrid";
 import ProductCarousel from "@/features/home/components/ProductCarousel";
 import LocationSection from "@/features/home/components/LocationSection";
 import HeroBannerVideo from "@/features/home/components/HeroBannerVideo";
+import { Tutorial } from "@/features/home/components/Tutorial";
 
 export default async function Page({
   params,
@@ -57,6 +58,10 @@ export default async function Page({
               id="more-to-explore"
               isBg={true}
             />
+          </div>
+          <div className="container mx-auto max-w-[1700px]">
+            {/* Tutorial Section */}
+            <Tutorial title={"Tutorial"} />
           </div>
           <div className="container mx-auto max-w-[1700px]">
             {/* Location Section */}

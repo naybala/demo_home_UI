@@ -31,6 +31,8 @@ export interface Product {
   warranty?: string;
   water_resistance?: string;
   crystal?: string;
+  discount_percentage?: string;
+  discount_price?: string;
 }
 
 export interface PaginatedData<T> {
