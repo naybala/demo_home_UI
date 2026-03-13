@@ -135,6 +135,7 @@ export default function ProductsClient({
             isOpen={isSidebarOpen}
             onClose={() => setIsSidebarOpen(false)}
             categories={categoriesData?.data || []}
+            totalProducts={allProducts.length}
             initialFilters={{
               categoryId: activeCategoryId,
               minPrice: activeMinPrice,
