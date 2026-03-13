@@ -44,10 +44,10 @@ export default function ProductCard({
         </h2>
         {mounted && isAuthenticated && (
           <div className="flex-row items-center justify-between mt-4">
-            <p className="flex justify-between">
+            <span className="flex justify-between">
               <s>{product.discount_price} Ks</s>
               <p>{product.discount_percentage} off</p>
-            </p>
+            </span>
 
             <span className="text-2xl font-black text-indigo-600 dark:text-indigo-400">
               {product.price} Ks

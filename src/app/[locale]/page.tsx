@@ -32,13 +32,15 @@ export default async function Page({
 
           {/* <HeroBannerVideo banners={homeData.banner_data} locale={locale} /> */}
 
-          <div className="container mx-auto max-w-[1700px]">
-            {/* Featured Grid Section */}
-            <FeaturedGrid
-              products={homeData.mini_banner_data}
-              locale={locale}
-              title="Featured"
-            />
+          <div className="bg-gray-300">
+            <div className="container mx-auto max-w-[1700px]">
+              {/* Featured Grid Section */}
+              <FeaturedGrid
+                products={homeData.mini_banner_data}
+                locale={locale}
+                title="Featured"
+              />
+            </div>
           </div>
           <div className="container mx-auto max-w-[1700px]">
             {/* New Arrivals Section */}

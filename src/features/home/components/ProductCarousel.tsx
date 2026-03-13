@@ -46,7 +46,7 @@ export default function ProductCarousel({
       className={
         isBg
           ? "py-24 bg-red-500 border-t border-gray-100 dark:border-gray-800 px-6 md:px-10 bg-image relative min-h-[600px] flex items-center overflow-hidden"
-          : "py-12 px-6 bg-white dark:bg-gray-900 border-t border-gray-100 dark:border-gray-800"
+          : "py-12 px-6  dark:bg-gray-900 border-t border-gray-100 dark:border-gray-800"
       }
       id={id}
     >
