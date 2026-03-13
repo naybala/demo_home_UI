@@ -98,134 +98,128 @@ export default function ProductsClient({
   }
 
   return (
-    <main className="pt-32 min-h-screen px-4 pb-20 bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
-      <div className="mx-auto">
-        <header className="mb-8 border-b border-gray-200 dark:border-gray-800 pb-4 flex items-center justify-between">
-          <div className="flex items-center gap-2 cursor-pointer text-sm font-semibold tracking-wider text-gray-900 dark:text-gray-100 uppercase">
-            SORT BY
-            <svg
-              className="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 4v16m8-8H4"
-              />
-            </svg>
-          </div>
-          <div
-            className="flex items-center gap-2 cursor-pointer text-sm font-semibold tracking-wider text-gray-900 dark:text-gray-100 uppercase"
-            onClick={() => setIsSidebarOpen(true)}
-          >
-            FILTERS
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4 6h16M4 12h16M4 18h16"
-              />
-            </svg>
-          </div>
-        </header>
-
-        <FilterSidebar
-          isOpen={isSidebarOpen}
-          onClose={() => setIsSidebarOpen(false)}
-          categories={categoriesData?.data || []}
-          initialFilters={{
-            categoryId: activeCategoryId,
-            minPrice: activeMinPrice,
-            maxPrice: activeMaxPrice,
-          }}
-          onApply={(filters) => {
-            setActiveCategoryId(filters.categoryId ?? "");
-            setActiveMinPrice(filters.minPrice);
-            setActiveMaxPrice(filters.maxPrice);
-          }}
-          locale={locale}
-          t={t}
+    <>
+      <div className="mb-4 pt-20">
+        <img
+          src="https://media.tudorwatch.com/image/upload/q_auto/f_auto/c_limit,w_1920/v1/tudorwatch/watches/collection/family-banners/tudorwatch-collection-black-bay-chrono-banner-bpm"
+          alt=""
+          className="h-80 w-full object-cover"
         />
+      </div>
+      <main className=" min-h-screen px-4 pb-20 bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+        <div className="mx-auto max-w-7xl">
+          <header className="mb-8 border-b border-gray-200 dark:border-gray-800 pb-4 flex items-center justify-between">
+            <div className="flex items-center gap-2 cursor-pointer text-sm font-semibold tracking-wider text-gray-900 dark:text-gray-100 uppercase"></div>
+            <div
+              className="flex items-center gap-2 cursor-pointer text-sm font-semibold tracking-wider text-gray-900 dark:text-gray-100 uppercase"
+              onClick={() => setIsSidebarOpen(true)}
+            >
+              FILTERS
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
+              </svg>
+            </div>
+          </header>
 
-        {mounted && isLoading && allProducts.length === 0 ? (
-          <ContentLoader message="Loading products..." />
-        ) : allProducts.length === 0 ? (
-          <div className="text-center py-20">
-            <h3 className="text-xl font-medium text-gray-600 dark:text-gray-400">
-              No products found matching your criteria
-            </h3>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-            {allProducts.map((product) => {
-              const isMM = locale === "mm";
-              const name = isMM ? product.name : product.name_other;
+          <FilterSidebar
+            isOpen={isSidebarOpen}
+            onClose={() => setIsSidebarOpen(false)}
+            categories={categoriesData?.data || []}
+            initialFilters={{
+              categoryId: activeCategoryId,
+              minPrice: activeMinPrice,
+              maxPrice: activeMaxPrice,
+            }}
+            onApply={(filters) => {
+              setActiveCategoryId(filters.categoryId ?? "");
+              setActiveMinPrice(filters.minPrice);
+              setActiveMaxPrice(filters.maxPrice);
+            }}
+            locale={locale}
+            t={t}
+          />
 
-              return (
-                <Link
-                  key={product.id}
-                  href={`/${locale}/products/${product.id}`}
-                  prefetch={true}
-                  className="group bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100 dark:border-gray-700 block"
-                >
-                  <div className="relative aspect-square overflow-hidden bg-gray-100 p-8">
-                    <img
-                      src={product.primary_photo}
-                      alt={name}
-                      className="absolute inset-0 w-full h-full object-fill transition-transform duration-500 group-hover:scale-110"
-                    />
-                    <div className="absolute top-4 right-4 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md px-3 py-1 rounded-full text-sm font-semibold text-blue-600 dark:text-blue-400">
-                      {product.category_names[0]}
-                    </div>
-                  </div>
+          {mounted && isLoading && allProducts.length === 0 ? (
+            <ContentLoader message="Loading products..." />
+          ) : allProducts.length === 0 ? (
+            <div className="text-center py-20">
+              <h3 className="text-xl font-medium text-gray-600 dark:text-gray-400">
+                No products found matching your criteria
+              </h3>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+              {allProducts.map((product) => {
+                const isMM = locale === "mm";
+                const name = isMM ? product.name : product.name_other;
 
-                  <div className="p-6">
-                    <h2 className="text-lg font-bold mb-2 text-gray-800 dark:text-white line-clamp-2 min-h-[3.5rem]">
-                      {name}
-                    </h2>
-                    {mounted && isAuthenticated() && (
-                      <div className="flex items-center justify-between mt-4">
-                        <span className="text-2xl font-black text-indigo-600 dark:text-indigo-400">
-                          {product.price} Ks
-                        </span>
+                return (
+                  <Link
+                    key={product.id}
+                    href={`/${locale}/products/${product.id}`}
+                    prefetch={true}
+                    className="group bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100 dark:border-gray-700 block"
+                  >
+                    <div className="relative aspect-square overflow-hidden bg-gray-100 p-8">
+                      <img
+                        src={product.primary_photo}
+                        alt={name}
+                        className="absolute inset-0 w-full h-full object-fill transition-transform duration-500 group-hover:scale-110"
+                      />
+                      <div className="absolute top-4 right-4 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md px-3 py-1 rounded-full text-sm font-semibold text-blue-600 dark:text-blue-400">
+                        {product.category_names[0]}
                       </div>
-                    )}
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
-        )}
+                    </div>
 
-        {/* Intersection Observer Trigger */}
-        <div
-          ref={observerRef}
-          className="w-full h-20 flex items-center justify-center mt-8"
-        >
-          {isFetchingNextPage && (
-            <div className="flex flex-col items-center gap-2">
-              <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-              <p className="text-sm text-gray-500 dark:text-gray-400 font-medium">
-                Fetching more products...
-              </p>
+                    <div className="p-6">
+                      <h2 className="text-lg font-bold mb-2 text-gray-800 dark:text-white line-clamp-2 min-h-[3.5rem]">
+                        {name}
+                      </h2>
+                      {mounted && isAuthenticated() && (
+                        <div className="flex items-center justify-between mt-4">
+                          <span className="text-2xl font-black text-indigo-600 dark:text-indigo-400">
+                            {product.price} Ks
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  </Link>
+                );
+              })}
             </div>
           )}
-          {!hasNextPage && !isLoading && allProducts.length > 0 && (
-            <p className="text-gray-500 dark:text-gray-400 font-medium bg-gray-100 dark:bg-gray-800 px-6 py-2 rounded-full border border-gray-200 dark:border-gray-700">
-              You've seen all products
-            </p>
-          )}
+
+          {/* Intersection Observer Trigger */}
+          <div
+            ref={observerRef}
+            className="w-full h-20 flex items-center justify-center mt-8"
+          >
+            {isFetchingNextPage && (
+              <div className="flex flex-col items-center gap-2">
+                <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+                <p className="text-sm text-gray-500 dark:text-gray-400 font-medium">
+                  Fetching more products...
+                </p>
+              </div>
+            )}
+            {!hasNextPage && !isLoading && allProducts.length > 0 && (
+              <p className="text-gray-500 dark:text-gray-400 font-medium bg-gray-100 dark:bg-gray-800 px-6 py-2 rounded-full border border-gray-200 dark:border-gray-700">
+                You've seen all products
+              </p>
+            )}
+          </div>
         </div>
-      </div>
-    </main>
+      </main>
+    </>
   );
 }

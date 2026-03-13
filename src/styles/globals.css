@@ -119,3 +119,43 @@ body::-webkit-scrollbar {
 .animate-progress {
   animation: progress 5s linear forwards;
 }
+
+/* Custom Price Slider Styles */
+.price-slider.p-slider {
+  background: #e5e7eb;
+  border: 0 none;
+  height: 1px;
+  margin: 1.5rem 0;
+}
+
+.price-slider .p-slider-handle {
+  background: #000;
+  border: 0 none;
+  width: 14px;
+  height: 14px;
+  top: 50%;
+  margin-top: -7px;
+  border-radius: 0; /* Square thumbs */
+  transition: transform 0.2s;
+  cursor: pointer;
+}
+
+.price-slider .p-slider-handle:hover {
+  transform: scale(1.1);
+}
+
+.price-slider .p-slider-range {
+  background: #000;
+}
+
+.dark .price-slider.p-slider {
+  background: #374151;
+}
+
+.dark .price-slider .p-slider-handle {
+  background: #fff;
+}
+
+.dark .price-slider .p-slider-range {
+  background: #fff;
+}

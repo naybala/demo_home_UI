@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Slider } from "primereact/slider";
 import { Category } from "../types/product.types";
 
 interface FilterSidebarProps {
@@ -79,18 +80,18 @@ export default function FilterSidebar({
   };
 
   const dummyFilters = [
-    "SORT BY",
-    "COLOR",
-    "SIZE",
-    "CONCEPT",
-    "CUSTOMER GROUP",
-    "FIT",
-    "FUNCTION",
-    "PATTERN",
-    "PRODUCT TYPE",
-    "QUALITY",
-    "STYLE",
-    "FEATURE",
+    // "SORT BY",
+    // "COLOR",
+    // "SIZE",
+    // "CONCEPT",
+    // "CUSTOMER GROUP",
+    // "FIT",
+    // "FUNCTION",
+    // "PATTERN",
+    // "PRODUCT TYPE",
+    // "QUALITY",
+    // "STYLE",
+    // "FEATURE",
   ];
 
   return (
@@ -154,36 +155,27 @@ export default function FilterSidebar({
                   </svg>
                 </span>
               </summary>
-              <div className="mt-4 flex items-center gap-4">
-                <div className="flex-1">
-                  <label className="text-xs text-gray-500 mb-1 block">
-                    Min
-                  </label>
-                  <input
-                    type="number"
-                    value={minPrice}
-                    onChange={(e) =>
-                      setMinPrice(e.target.value ? Number(e.target.value) : "")
-                    }
-                    placeholder="0"
-                    className="w-full px-3 py-2 text-sm border border-gray-200 dark:border-gray-700 rounded-md focus:outline-none focus:ring-1 focus:ring-black dark:focus:ring-white bg-transparent dark:text-white"
-                  />
+              <div className="mt-8 px-2">
+                <div className="flex justify-between mb-6">
+                  <span className="text-sm font-bold text-gray-900 dark:text-white">
+                    MMK {(minPrice || 0).toLocaleString()}
+                  </span>
+                  <span className="text-sm font-bold text-gray-900 dark:text-white">
+                    MMK {(maxPrice || 10000000).toLocaleString()}
+                  </span>
                 </div>
-                <div className="text-gray-400 mt-5">-</div>
-                <div className="flex-1">
-                  <label className="text-xs text-gray-500 mb-1 block">
-                    Max
-                  </label>
-                  <input
-                    type="number"
-                    value={maxPrice}
-                    onChange={(e) =>
-                      setMaxPrice(e.target.value ? Number(e.target.value) : "")
-                    }
-                    placeholder="10000"
-                    className="w-full px-3 py-2 text-sm border border-gray-200 dark:border-gray-700 rounded-md focus:outline-none focus:ring-1 focus:ring-black dark:focus:ring-white bg-transparent dark:text-white"
-                  />
-                </div>
+                <Slider
+                  value={[Number(minPrice) || 0, Number(maxPrice) || 10000000]}
+                  onChange={(e) => {
+                    const [min, max] = e.value as [number, number];
+                    setMinPrice(min);
+                    setMaxPrice(max);
+                  }}
+                  range
+                  min={0}
+                  max={10000000}
+                  className="price-slider"
+                />
               </div>
             </details>
 
