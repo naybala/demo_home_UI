@@ -2,6 +2,7 @@
 
 import { Product } from "../types/product.types";
 import Link from "next/link";
+import PriceTag from "@/components/common/PriceTag";
 
 interface ProductCardProps {
   product: Product;
@@ -43,16 +44,11 @@ export default function ProductCard({
           {name}
         </h2>
         {mounted && isAuthenticated && (
-          <div className="flex-row items-center justify-between mt-4">
-            <span className="flex justify-between">
-              <s>{product.discount_price} Ks</s>
-              <p>{product.discount_percentage} off</p>
-            </span>
-
-            <span className="text-2xl font-black text-indigo-600 dark:text-indigo-400">
-              {product.price} Ks
-            </span>
-          </div>
+          <PriceTag
+            price={product.price}
+            discount_price={product.discount_price}
+            discount_percentage={product.discount_percentage}
+          />
         )}
       </div>
     </Link>

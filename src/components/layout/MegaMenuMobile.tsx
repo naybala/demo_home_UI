@@ -4,6 +4,7 @@ import {
   NestedCategory,
   Product,
 } from "@/features/products/types/product.types";
+import { useAuthStore } from "@/stores/auth";
 
 interface MegaMenuMobileProps {
   isOpen: boolean;
@@ -30,6 +31,8 @@ export default function MegaMenuMobile({
   loading,
   products,
 }: MegaMenuMobileProps) {
+  const { isAuthenticated } = useAuthStore();
+
   return (
     <div
       className={`md:hidden fixed inset-0 top-[64px] z-40 bg-white dark:bg-[#0f1114] flex flex-col transition-all duration-500 ease-in-out ${

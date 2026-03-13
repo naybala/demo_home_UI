@@ -194,7 +194,7 @@ export default function Header({ t }: { t: any }) {
                     onClick={handleLogout}
                     className="text-[10px] font-bold text-red-500 hover:text-red-600 uppercase tracking-widest"
                   >
-                    Out
+                    log out
                   </button>
                 </div>
               ) : (

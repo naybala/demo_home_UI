@@ -5,7 +5,6 @@ import {
   useInfiniteProducts,
 } from "../queries/products.queries";
 import ContentLoader from "@/components/common/ContentLoader";
-import Link from "next/link";
 import { ProductListResponse } from "../types/product.types";
 import { useEffect, useRef, useState } from "react";
 import FilterSidebar from "./FilterSidebar";

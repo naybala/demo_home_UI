@@ -5,6 +5,7 @@ import { useAuthStore } from "@/stores/auth";
 import { Carousel } from "primereact/carousel";
 import { Image } from "primereact/image";
 import { Fieldset } from "primereact/fieldset";
+import PriceTag from "@/components/common/PriceTag";
 
 export const ProductDetailCard = ({
   product,
@@ -85,15 +86,11 @@ export const ProductDetailCard = ({
             </button>
 
             {isAuthenticated() && (
-              <div className="flex-row items-center gap-2">
-                <span className="flex justify-between gap-4 text-gray-900 dark:text-white">
-                  <s>{product.discount_price} Ks</s>
-                  <p>{product.discount_percentage} off</p>
-                </span>
-                <span className="text-xl font-bold text-gray-900 dark:text-white">
-                  {product.price} Ks
-                </span>
-              </div>
+              <PriceTag
+                price={product.price}
+                discount_price={product.discount_price}
+                discount_percentage={product.discount_percentage}
+              />
             )}
 
             {/* <div className="flex items-center gap-8 py-4">

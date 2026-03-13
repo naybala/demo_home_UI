@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Product } from "../types/home.types";
 import { useAuthStore } from "@/stores/auth";
+import PriceTag from "@/components/common/PriceTag";
 
 interface CompactProductCardProps {
   product: Product;
@@ -64,25 +65,27 @@ export default function CompactProductCard({
 
   return (
     <Link href={`/${locale}/products/${product.id}`} className="group block">
-      <div className="relative aspect-square overflow-hidden bg-gray-100 rounded-lg mb-4">
-        <img
-          src={product.primary_photo}
-          alt={product.name}
-          className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-        />
-      </div>
-      <div className="space-y-1">
-        <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100">
-          {locale === "mm" ? product.name_other : product.name}
-        </h3>
-        <p className="text-sm text-gray-500 dark:text-gray-400">
-          {product.category_names.join(", ")}
-        </p>
-        {isAuthenticated() && (
-          <p className="text-sm font-bold text-gray-900 dark:text-gray-100">
-            {product.price} Ks
-          </p>
-        )}
+      <div className="border border-gray-200 rounded-lg shadow-lg">
+        <div className="relative aspect-square overflow-hidden bg-gray-100 rounded-t-lg mb-4">
+          <img
+            src={product.primary_photo}
+            alt={product.name}
+            className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          />
+        </div>
+        <div className="space-y-1 px-5 pb-2">
+          <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-2">
+            {locale === "mm" ? product.name_other : product.name}
+          </h3>
+
+          {isAuthenticated() && (
+            <PriceTag
+              price={product.price}
+              discount_price={product.discount_price}
+              discount_percentage={product.discount_percentage}
+            />
+          )}
+        </div>
       </div>
     </Link>
   );

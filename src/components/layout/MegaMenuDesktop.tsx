@@ -5,6 +5,8 @@ import {
   NestedCategory,
   Product,
 } from "@/features/products/types/product.types";
+import { useAuthStore } from "@/stores/auth";
+import PriceTag from "../common/PriceTag";
 
 interface MegaMenuDesktopProps {
   isOpen: boolean;
@@ -34,6 +36,7 @@ export default function MegaMenuDesktop({
   products,
 }: MegaMenuDesktopProps) {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const { isAuthenticated } = useAuthStore();
   const [showNext, setShowNext] = useState(false);
 
   const checkOverflow = useCallback(() => {
@@ -194,6 +197,15 @@ export default function MegaMenuDesktop({
                       className="max-h-[90%] max-w-[85%] object-contain drop-shadow-2xl group-hover:scale-110 group-hover:-translate-y-2 transition-all duration-500"
                     />
                   </div>
+
+                  {/* Price */}
+                  {isAuthenticated() && (
+                    <PriceTag
+                      price={product.price}
+                      discount_price={product.discount_price}
+                      discount_percentage={product.discount_percentage}
+                    />
+                  )}
                 </div>
               ))
             ) : (
