@@ -32,6 +32,7 @@ export default function ProductsClient({
   const [activeCategoryId, setActiveCategoryId] = useState<string | number>("");
   const [activeMinPrice, setActiveMinPrice] = useState<number | undefined>();
   const [activeMaxPrice, setActiveMaxPrice] = useState<number | undefined>();
+  const [isWaiting, setIsWaiting] = useState(false);
 
   const {
     data,
@@ -55,12 +56,17 @@ export default function ProductsClient({
   }, []);
 
   useEffect(() => {
-    if (!mounted || !hasNextPage || isFetchingNextPage) return;
+    if (!mounted || !hasNextPage || isFetchingNextPage || isWaiting) return;
 
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
-          fetchNextPage();
+          setIsWaiting(true);
+          setTimeout(() => {
+            fetchNextPage().finally(() => {
+              setIsWaiting(false);
+            });
+          }, 1000);
         }
       },
       { threshold: 0.1 },
@@ -76,7 +82,7 @@ export default function ProductsClient({
         observer.unobserve(currentRef);
       }
     };
-  }, [mounted, hasNextPage, isFetchingNextPage, fetchNextPage]);
+  }, [mounted, hasNextPage, isFetchingNextPage, fetchNextPage, isWaiting]);
 
   // Flatten all products from all pages
   const allProducts = data?.pages.flatMap((page) => page.data.data) || [];
@@ -178,7 +184,7 @@ export default function ProductsClient({
             ref={observerRef}
             className="w-full h-20 flex items-center justify-center mt-8"
           >
-            {isFetchingNextPage && (
+            {(isFetchingNextPage || isWaiting) && (
               <div className="flex flex-col items-center gap-2">
                 <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
                 <p className="text-sm text-gray-500 dark:text-gray-400 font-medium">
